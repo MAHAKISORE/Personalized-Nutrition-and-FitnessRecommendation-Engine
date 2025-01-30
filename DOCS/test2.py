@@ -40,7 +40,7 @@ def delete():
    con.commit()
 
 
-createTable()
+insertMany()
 con.close()
 
 
