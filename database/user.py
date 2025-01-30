@@ -1,5 +1,4 @@
-from db import DataBase
-
+from .db import DataBase
 
 class User(DataBase):
     def __init__(self):
