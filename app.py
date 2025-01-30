@@ -20,9 +20,6 @@ def page():
         return "hello world"
 
 
-
-
-
 app.run(debug=True)
 
 print("hi")

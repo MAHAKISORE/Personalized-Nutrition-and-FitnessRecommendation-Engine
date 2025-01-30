@@ -1,4 +1,9 @@
-import sys
-import os
+class Person:
+    def __init__(self):
+        self.__id = "hello"
+class Student(Person):
+    def __init__(self):
+        super().__init__()
+        print(self._Person__id)
 
-sys.path.append(os.path.abspath(os.path.dirname(__file__)))
+print(Student())
