@@ -7,3 +7,7 @@ class Student(Person):
         print(self._Person__id)
 
 print(Student())
+
+data = {"name":"sarvesh"}
+
+print(data["age"])
