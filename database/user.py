@@ -13,5 +13,10 @@ class User(DataBase):
         self._cursor.execute("INSERT INTO Users VALUES(?,?,?,?,?,?)",user)
         self._conn.commit()
 
-        
+    def getUser(self,field,value):
+        query = f"SELECT * FROM Users WHERE {field}={value}";
+        self._cursor.execute(query)
+        users = self._cursor.fetchone()
+        print(users)
+        return users
 

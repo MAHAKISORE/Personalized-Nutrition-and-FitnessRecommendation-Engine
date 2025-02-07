@@ -1,5 +1,5 @@
 from flask import Flask,render_template,request
-
+from repository.user_auth import UserAuth
 
 from database.user import User
 from Models.user_model import UserModel
@@ -15,15 +15,15 @@ def hello_world():
 @app.route("/signIn",methods=['GET','POST'])
 
 def page():
-    user = User()
+    auth = UserAuth()
     if(request.method == "GET"):
         print(request.data)
-        user.signIn()
+        auth.signIn()
         return "hello world"
     if(request.method == "POST"):
         body = request.get_json()
-        user.signIn(body)
-        return "Hi there POST!"
+        res = auth.signIn(body)
+        return res
 
 
 app.run(debug=True)

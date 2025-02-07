@@ -44,3 +44,6 @@ insertMany()
 con.close()
 
 
+
+print(len((2,34,5)))
+
