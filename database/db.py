@@ -10,11 +10,11 @@ class DataBase:
     def createTables(self):
         try:
             cursor = self._conn.cursor()
-            cursor.execute(""" CREATE TABLE IF NOT EXISTS Name (
+            cursor.execute(""" CREATE TABLE Users(
                 id INTEGER PRIMARY KEY AUTOINCREMENT,
             name TEXT
             age INT,
-            phone INTEGER,
+            email TEXT,
             height INTEGER,
             weight INTEGER,
             gender TEXT
@@ -25,8 +25,11 @@ class DataBase:
         except sqlite3.Error as e:
             print(e)
     
-
+    def deleteTable(self):
+        self._conn.execute("DROP TABLE Users")
     
     def close(self):
         self._conn.close()
 
+
+DataBase().createTables()

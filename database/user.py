@@ -14,7 +14,7 @@ class User(DataBase):
         self._conn.commit()
 
     def getUser(self,field,value):
-        query = f"SELECT * FROM Users WHERE {field}={value}";
+        query = 'SELECT * FROM Users WHERE {}=\'{}\''.format(field,value)
         self._cursor.execute(query)
         users = self._cursor.fetchone()
         print(users)
