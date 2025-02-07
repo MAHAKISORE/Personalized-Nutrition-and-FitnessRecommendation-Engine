@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Profile Page</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css" rel="stylesheet">
+    <style>
+        :root {
+            --primary: #4CAF50;
+            --secondary: #2E7D32;
+            --accent: #81C784;
+            --light: #E8F5E9;
+            --dark: #1B5E20;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            transition: all 0.3s ease;
+        }
+
+        body {
+            font-family: 'Poppins', sans-serif;
+            background: var(--light);
+            color: #333;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+        }
+
+        .profile-container {
+            background: white;
+            padding: 20px;
+            border-radius: 15px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+            width: 350px;
+            text-align: center;
+        }
+
+        h2 {
+            color: var(--dark);
+            margin-bottom: 1rem;
+        }
+
+        .profile-card {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+
+        .profile-info {
+            display: flex;
+            flex-direction: column;
+            align-items: flex-start;
+        }
+
+        label {
+            font-weight: bold;
+            margin-bottom: 5px;
+            color: var(--secondary);
+        }
+
+        input {
+            padding: 10px;
+            width: 100%;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            background: var(--light);
+            color: #333;
+        }
+
+        .save-btn {
+            background: var(--primary);
+            color: white;
+            padding: 12px;
+            border: none;
+            border-radius: 50px;
+            cursor: pointer;
+            font-weight: bold;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            box-shadow: 0 4px 15px rgba(76, 175, 80, 0.3);
+            animation: pulse 2s infinite;
+        }
+
+        .save-btn:hover {
+            background: var(--secondary);
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(76, 175, 80, 0.4);
+        }
+
+        @keyframes pulse {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+            100% { transform: scale(1); }
+        }
+    </style>
+</head>
+<body>
+    <div class="profile-container">
+        <h2>My Profile</h2>
+        <div class="profile-card">
+            <div class="profile-info">
+                <label>Name:</label>
+                <input type="text" placeholder="Enter your name">
+            </div>
+            <div class="profile-info">
+                <label>Date of Birth:</label>
+                <input type="date">
+            </div>
+            <div class="profile-info">
+                <label>Age:</label>
+                <input type="number" placeholder="Enter your age">
+            </div>
+            <div class="profile-info">
+                <label>Height (cm):</label>
+                <input type="number" placeholder="Enter height">
+            </div>
+            <div class="profile-info">
+                <label>Weight (kg):</label>
+                <input type="number" placeholder="Enter weight">
+            </div>
+            <button class="save-btn">Save</button>
+        </div>
+    </div>
+</body>
+</html>
