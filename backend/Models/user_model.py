@@ -9,12 +9,13 @@ class UserModel:
         self.height:float = height
         self.weight:float = weight
         self.email:int = email
-        self.gender:str = gender,
+        self.gender:str = gender
 
 
     def toDataBase(self,json_data):
         id = random.randint(1000,99999)
         user = self.fromJson(json_data)
+       
         return(id,user.name,user.email,user.age,user.weight,user.gender)
 
     @classmethod

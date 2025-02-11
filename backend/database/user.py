@@ -11,8 +11,10 @@ class User(DataBase):
         
         user = UserModel().toDataBase(json_data=json_data)
         temp = list(user)
+   
         temp.append(json_data["pwd"])
         user_with_pwd = tuple(temp)
+     
         self._cursor.execute("INSERT INTO Users VALUES(?,?,?,?,?,?,?)",user_with_pwd)
         self._conn.commit()
 
