@@ -17,7 +17,8 @@ class DataBase:
             email TEXT,
             height INTEGER,
             weight INTEGER,
-            gender TEXT
+            gender TEXT,
+            pwd TEXT
             );
                 """)
             
@@ -32,4 +33,3 @@ class DataBase:
         self._conn.close()
 
 
-DataBase().createTables()
