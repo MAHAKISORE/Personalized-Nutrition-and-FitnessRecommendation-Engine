@@ -11,7 +11,6 @@ class UserModel:
         self.email:int = email
         self.gender:str = gender
 
-
     def toDataBase(self,json_data):
         id = random.randint(1000,99999)
         user = self.fromJson(json_data)
