@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Profile Details</title>
+    <style>
+        body {
+            background-color: #f5fdf5;
+            color: #333;
+            font-family: Arial, sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+        }
+
+        .container {
+            background: white;
+            width: 90%;
+            max-width: 400px;
+            text-align: center;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+        }
+
+        h1 {
+            font-size: 24px;
+            color: #2d7d2d;
+            margin-bottom: 10px;
+        }
+
+        p {
+            font-size: 14px;
+            color: #555;
+            margin-bottom: 20px;
+        }
+
+        .input-group {
+            background-color: #f9f9f9;
+            border-radius: 10px;
+            padding: 15px;
+            margin-bottom: 15px;
+            text-align: left;
+        }
+
+        .input-group label {
+            display: block;
+            font-size: 14px;
+            margin-bottom: 5px;
+        }
+
+        .input-group input, .input-group select {
+            width: 100%;
+            padding: 10px;
+            background-color: white;
+            border: 1px solid #ccc;
+            color: #333;
+            border-radius: 5px;
+        }
+
+        button {
+            width: 100%;
+            padding: 15px;
+            background-color: #c4e3c4;
+            border: none;
+            color: #2d7d2d;
+            font-size: 16px;
+            border-radius: 10px;
+            cursor: not-allowed;
+        }
+
+        button.active {
+            background-color: #2d7d2d;
+            color: white;
+            cursor: pointer;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Profile Details</h1>
+        <p>Enter your details so we can customize your targets.</p>
+        
+        <form id="profile-form">
+            <div class="input-group">
+                <label for="sex">Your sex</label>
+                <select id="sex" required>
+                    <option value="">Select</option>
+                    <option value="male">Male</option>
+                    <option value="female">Female</option>
+                </select>
+            </div>
+            
+            <div class="input-group">
+                <label for="birthday">Your birthday</label>
+                <input type="date" id="birthday" required>
+            </div>
+            
+            <div class="input-group">
+                <label for="height">Your height (cm)</label>
+                <input type="number" id="height" placeholder="Enter your height" required>
+            </div>
+            
+            <div class="input-group">
+                <label for="weight">Your weight (kg)</label>
+                <input type="number" id="weight" placeholder="Enter your weight" required>
+            </div>
+            
+            <button type="submit" id="next-btn" disabled>Next</button>
+        </form>
+    </div>
+    
+    <script>
+        document.getElementById('profile-form').addEventListener('input', function() {
+            const sex = document.getElementById('sex').value;
+            const birthday = document.getElementById('birthday').value;
+            const height = document.getElementById('height').value;
+            const weight = document.getElementById('weight').value;
+            const nextBtn = document.getElementById('next-btn');
+
+            if (sex && birthday && height && weight) {
+                nextBtn.classList.add('active');
+                nextBtn.removeAttribute('disabled');
+            } else {
+                nextBtn.classList.remove('active');
+                nextBtn.setAttribute('disabled', 'true');
+            }
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Activity Level</title>
+    <style>
+        body {
+            background-color: #f5fdf5;
+            color: #1a3e1a;
+            font-family: Arial, sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+        }
+
+        .container {
+            background: #ffffff;
+            width: 90%;
+            max-width: 400px;
+            text-align: center;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+        }
+
+        h1 {
+            font-size: 24px;
+            color: #2a7a2a;
+            margin-bottom: 10px;
+        }
+
+        p {
+            font-size: 14px;
+            color: #3e573e;
+            margin-bottom: 20px;
+        }
+
+        .slider-container {
+            text-align: left;
+            margin-bottom: 15px;
+            background-color: #e6f5e6;
+            padding: 15px;
+            border-radius: 10px;
+        }
+
+        .slider-container label {
+            display: block;
+            font-size: 14px;
+            margin-bottom: 5px;
+            color: #3e573e;
+        }
+
+        .slider {
+            width: 100%;
+            accent-color: #2a7a2a;
+        }
+
+        .activity-description {
+            font-size: 14px;
+            color: #3e573e;
+            margin-top: 10px;
+        }
+
+        .emoji {
+            font-size: 24px;
+            display: block;
+            margin-bottom: 10px;
+        }
+
+        button {
+            width: 100%;
+            padding: 15px;
+            background-color: #2a7a2a;
+            border: none;
+            color: white;
+            font-size: 16px;
+            font-weight: bold;
+            border-radius: 10px;
+            cursor: pointer;
+            transition: background 0.3s;
+            margin-top: 15px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Activity Level</h1>
+        <p>Based on your activity level, we can estimate the energy you burn each day.</p>
+        
+        <div class="slider-container">
+            <span class="emoji">🏃‍♂️</span>
+            <label for="activity">Your Activity Level</label>
+            <input type="range" id="activity" min="1" max="5" step="1" class="slider">
+            <p class="activity-description" id="activity-desc">Sedentary - Little or no exercise</p>
+        </div>
+        
+        <button id="next-btn">Next</button>
+    </div>
+    
+    <script>
+        const activityLevels = [
+            "Sedentary - Little or no exercise",
+            "Lightly Active - Light exercise/sports 1-3 days/week",
+            "Moderately Active - Moderate exercise/sports 3-5 days/week",
+            "Very Active - Hard exercise/sports 6-7 days/week",
+            "Super Active - Very hard exercise/physical job"
+        ];
+        
+        const emojis = ["🪑", "🚶‍♂️", "🏃‍♂️", "🏋️‍♂️", "🔥"];
+
+        document.getElementById('activity').addEventListener('input', function() {
+            document.getElementById('activity-desc').textContent = activityLevels[this.value - 1];
+            document.querySelector('.emoji').textContent = emojis[this.value - 1];
+        });
+    </script>
+</body>
+</html>
