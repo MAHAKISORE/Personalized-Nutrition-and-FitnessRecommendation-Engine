@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Weekly Meal Plan</title>
+    <style>
+        body {
+            background-color: #f5fdf5;
+            color: #1a3e1a;
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 20px;
+        }
+        .container {
+            max-width: 800px;
+            margin: auto;
+            background: white;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+        }
+        h1 {
+            text-align: center;
+            color: #2a7a2a;
+        }
+        .day {
+            margin-bottom: 20px;
+            padding: 15px;
+            background-color: #e6f5e6;
+            border-radius: 10px;
+        }
+        .meal {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            background: white;
+            padding: 10px;
+            margin-top: 10px;
+            border-radius: 5px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+        }
+        .search-box {
+            flex-grow: 1;
+            padding: 8px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+        .add-button {
+            margin-left: 10px;
+            background-color: #2a7a2a;
+            color: white;
+            border: none;
+            padding: 8px 12px;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Weekly Meal Plan</h1>
+        
+        <div id="week-plan"></div>
+    </div>
+    
+    <script>
+        const days = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'];
+        const meals = ['Breakfast', 'Lunch', 'Dinner'];
+
+        const weekPlan = document.getElementById('week-plan');
+
+        days.forEach(day => {
+            const dayDiv = document.createElement('div');
+            dayDiv.classList.add('day');
+            dayDiv.innerHTML = `<h3>${day}</h3>`;
+            
+            meals.forEach(meal => {
+                const mealDiv = document.createElement('div');
+                mealDiv.classList.add('meal');
+                mealDiv.innerHTML = `
+                    <span>${meal}</span>
+                    <input type="text" class="search-box" placeholder="Search food...">
+                    <button class="add-button">+</button>
+                `;
+                dayDiv.appendChild(mealDiv);
+            });
+            
+            weekPlan.appendChild(dayDiv);
+        });
+    </script>
+</body>
+</html>
