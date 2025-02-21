@@ -1,5 +1,7 @@
 from flask import Flask,render_template,request
 from repository.user_auth import UserAuth
+from database.food import Foods
+
 app = Flask(__name__)
 
 
@@ -30,6 +32,13 @@ def login():
         return res
     if(request.method == "GET"):
         return "hello world"
-app.run(debug=True)
 
+
+@app.route('/search',methods=['GET'])
+def search():
+    name = request.args.get('name')
+    sorted_list = Foods().search_data(name)
+    return sorted_list
+
+app.run(debug=True)
 print("hello")

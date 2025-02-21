@@ -1,19 +1,22 @@
-from db import DataBase
-
+from .db import DataBase
+import database.jaro as jaro
 
 class Foods(DataBase):
     def __init__(self):
         super().__init__()
         self._cursor = self._conn.cursor()
-        self.data = []
+      
 
     def getData(self):
+        datas = []
         task = "SELECT food_name FROM Foods"
         self._cursor.execute(task)
         data:list = self._cursor.fetchall()
         for i in data:
             for k in i:
-                self.data.append(k)
-
-
-
+                datas   .append(k)
+        return datas
+    def search_data(self,query):
+        data = self.getData()
+        sorted_list = jaro.hybrid_search(query=query,name_list=data,top_n=20)
+        return sorted_list
