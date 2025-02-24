@@ -1,13 +1,14 @@
 from flask import Flask,render_template,request
 from repository.user_auth import UserAuth
 from database.food import Foods
+template_dir = "../Frontend/"
+app = Flask(__name__,template_folder=template_dir)
 
-app = Flask(__name__)
 
 
 @app.route("/")
 def hello_world():
-    return render_template("main.html")
+    return render_template("signIn_login/main.html")
 
 
 @app.route("/signIn",methods=['GET','POST'])
