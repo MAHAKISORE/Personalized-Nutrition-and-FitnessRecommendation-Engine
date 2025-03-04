@@ -1,5 +1,5 @@
 from .db import DataBase
-import database.jaro as jaro
+from .jaro import hybrid_search
 
 class Foods(DataBase):
     def __init__(self):
@@ -18,5 +18,5 @@ class Foods(DataBase):
         return datas
     def search_data(self,query):
         data = self.getData()
-        sorted_list = jaro.hybrid_search(query=query,name_list=data,top_n=20)
+        sorted_list = hybrid_search(query=query,name_list=data,top_n=20)
         return sorted_list

@@ -1,5 +1,5 @@
 from .db import DataBase
-from Models.user_model import UserModel
+from ..Models.user_model import UserModel
 
 
 class User(DataBase):

@@ -1,5 +1,5 @@
-from database.user import User
-from Models.user_model import UserModel
+from ..data_layer.repository.user import User
+from ..data_layer.Models.user_model import UserModel
 
 
 class UserAuth:

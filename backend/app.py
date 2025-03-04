@@ -1,8 +1,8 @@
 from flask import Flask,render_template,request
-from repository.user_auth import UserAuth
-from database.food import Foods
-template_dir = "../Frontend/"
-app = Flask(__name__,template_folder=template_dir)
+from .controller.user_auth import UserAuth
+from .data_layer.repository.food import Foods
+
+app = Flask(__name__)
 
 
 
