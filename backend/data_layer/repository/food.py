@@ -14,7 +14,7 @@ class Foods(DataBase):
         data:list = self._cursor.fetchall()
         for i in data:
             for k in i:
-                datas   .append(k)
+                datas.append(k)
         return datas
     def search_data(self,query):
         data = self.getData()

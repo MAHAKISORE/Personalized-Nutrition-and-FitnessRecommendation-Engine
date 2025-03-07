@@ -1,8 +1,8 @@
 import random
+from .model import ModelInterface
 
-
-class UserModel:
-    def __init__(self,id:str = None,name:str = None,age:int = None,height:float=None,weight:float=None,email:int = None,gender:str = None):
+class UserModel(ModelInterface):
+    def __init__(self,id:str = None,name:str = None,age:int = None,height:float=None,weight:float=None,email:str = None,gender:str = None):
         self.id = id
         self.name:str = name
         self.age:int = age
@@ -11,28 +11,38 @@ class UserModel:
         self.email:int = email
         self.gender:str = gender
 
-    def toDataBase(self,json_data):
+    def toDatabase(self,json_data):
         id = random.randint(1000,99999)
         user = self.fromJson(json_data)
        
-        return(id,user.name,user.email,user.age,user.weight,user.gender)
+        return(id,user.name,user.email)
 
-    @classmethod
-    def fromDatabase(user,data):
-        return user(data[0],data[1],data[2],data[3],data[4],data[5],data[6])
+    # @classmethod
+    # def fromDatabase(user,data):
+       
+    #     return user(
+    #         id = data.get('id'),
+    #         name = data.get('name'),
+    #         age = data.get('age'),
+    #         height = data.get('height'),
+    #         weight=data.get('weight'),
+    #         email = data.get('email'),
+    #         gender = data.get('gender')
+    #     )
     
 
     
     @classmethod
     def fromJson(user,json_data):
+        print(json_data.get("name"))
         return user(
-            name=json_data["name"],
-            age=json_data["age"],
-            height = json_data["height"],
-            weight = json_data["weight"],
-            email = json_data["email"],
-            gender = json_data["gender"]
-            )
+            name=json_data.get("name"),
+            age=json_data.get("age"),
+            height = json_data.get("height"),
+            weight = json_data.get("weight"),
+            email = json_data.get("email"),
+            gender = json_data.get("gender")
+            ) 
     
 
     

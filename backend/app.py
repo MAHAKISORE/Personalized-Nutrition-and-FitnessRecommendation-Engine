@@ -1,5 +1,6 @@
 from flask import Flask,render_template,request
 from .controller.user_auth import UserAuth
+from .controller.health_controller import HealthController
 from .data_layer.repository.food import Foods
 
 app = Flask(__name__)
@@ -40,6 +41,14 @@ def search():
     name = request.args.get('name')
     sorted_list = Foods().search_data(name)
     return sorted_list
+
+@app.route('/user/healthUpdate')
+def update():
+    body = request.get_json()
+    res = HealthController().updateHealthModel(body)
+    return res
+    
+    
 
 app.run(debug=True)
 print("hello")

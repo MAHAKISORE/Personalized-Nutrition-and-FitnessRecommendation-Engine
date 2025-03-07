@@ -1,24 +1,44 @@
-from ..data_layer.repository.user import User
+from ..data_layer.repository.user import UserRepository
 from ..data_layer.Models.user_model import UserModel
+from abc import ABC, abstractmethod
 
 
-class UserAuth:
- 
+class UserAuthInterface(ABC):
+    @abstractmethod
+    def signIn(self,json_data):
+        pass
+    @abstractmethod
+    def login(self,json_data):
+        pass
+
+
+class UserAuth(UserAuthInterface):
+    
     def __init__(self):
-        self.__data = User()
+        self.__data = UserRepository()
 
     def signIn(self,json_data):
-        
-        model = UserModel().fromJson(json_data=json_data)
-        user = self.__data.getUser(field='email',value=model.email)
-        if(user == None):
-            self.__data.signIn(json_data=json_data)
-            return "User successfuly created"
-        else:
-            return "User already exist"
+            model = UserModel().fromJson(json_data=json_data)
+            user = self.__data.getUser(field='email',value=model.email)
+            if(user == None):
+                self.__data.signIn(json_data=json_data)
+                return "User successfuly created"
+            else:
+                return "User already exist"
+       
         
     def login(self,json_data):
-        return self.__data.login(json_data)
+        email = json_data["email"]
+        pwd = json_data["pwd"]
+
+        user = self.__data.getUser("email",email)
+        if(user == None):
+            return "Email has not been registered yet"
+        
+        if(user[6] == pwd):
+            return "User verified"
+        else:
+            return "Wrong pwd"
     
         
         
