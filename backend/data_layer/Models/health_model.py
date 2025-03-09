@@ -1,7 +1,7 @@
 from .model import ModelInterface
 from .user_model import UserModel
 
-class HealthModel(UserModel):
+class HealthModel(UserModel,ModelInterface):
     def __init__(self,height:float=None,age:int = None,weight:float = None,bmi:float = None,allergy:int = None,diabetes:int=None,hyper_tension:int=None,gender:str = None):
         super().__init__()
         self.height = height

@@ -1,7 +1,19 @@
 from ..Models.health_model import HealthModel
+from abc import ABC,abstractmethod
 from .user import UserRepository
 
-class HealthDataProvider(UserRepository):
+class HeatlthProviderInterface(ABC):
+     @abstractmethod
+     def bmi(self):
+          pass
+     @abstractmethod
+     def updateHeathFields(self):
+          pass
+     
+   
+
+
+class HealthDataProvider(UserRepository,HeatlthProviderInterface):
     def __init__(self,id):
         super().__init__()
         self._id = id
@@ -16,13 +28,14 @@ class HealthDataProvider(UserRepository):
             health_data.bmi =self.bmi(height=health_data.height,weight=health_data.weight)
             # print(health_data.bmi)
             # print(json_data["id"])
-
+            
             self._cursor.execute("UPDATE Users SET gender=?,height=?,weight=?,age=?,bmi=?,allergy=?,diabetes=?,hyper_tension=? WHERE id=?",(health_data.gender,health_data.height,health_data.weight,health_data.age,health_data.bmi,health_data.allergy,health_data.diabetes,health_data.hyper_tension,json_data["id"]))
             self._conn.commit()
         except Exception as e:
                 print(e)
         finally:
              self._conn.close()
+             
         
 
 

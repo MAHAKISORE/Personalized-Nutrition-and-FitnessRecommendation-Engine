@@ -42,7 +42,7 @@ def search():
     sorted_list = Foods().search_data(name)
     return sorted_list
 
-@app.route('/user/healthUpdate')
+@app.route('/user/healthUpdate',methods=['POST'])
 def update():
     body = request.get_json()
     res = HealthController().updateHealthModel(body)

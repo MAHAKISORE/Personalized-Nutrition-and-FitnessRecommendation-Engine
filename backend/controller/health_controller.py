@@ -6,7 +6,7 @@ class HealthController(UserRepository):
         pass
 
     def updateHealthModel(self,json_data):
-            print(json_data["id"])
+            # print(json_data["id"])
             health_data = HealthDataProvider(id=json_data["id"])
             health_data.updateHeathFields(json_data=json_data)
             return "Updated!"

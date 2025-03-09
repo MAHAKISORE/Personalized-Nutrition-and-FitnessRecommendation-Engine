@@ -1,6 +1,6 @@
-from .model import Models
+from .model import ModelInterface
 
-class FoodModel(Models):
+class FoodModel(ModelInterface):
     def __init__(self,id:str = None,name:str = None,energy:float= None,calorie:float=None,protien:float = None):
         self.id = id
         self.name = name,
