@@ -2,9 +2,9 @@ from flask import Flask,render_template,request
 from .controller.user_auth import UserAuth
 from .controller.health_controller import HealthController
 from .data_layer.repository.food import Foods
-
+from flask_cors import CORS
 app = Flask(__name__)
-
+CORS(app)
 
 
 @app.route("/")
