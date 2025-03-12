@@ -1,12 +1,19 @@
-from ..data_layer.repository.health import HealthDataProvider
-from ..data_layer.repository.user import UserRepository
+from ..data_layer.repository.health_repository import HealthRepository
+from ..data_layer.repository.user_repository import UserRepository
+from abc import ABC,abstractmethod
 
-class HealthController(UserRepository):
+
+class HealthControllerInterface(ABC):
+     @abstractmethod
+     def updateHealthModel(self,json_data):
+          pass
+     
+
+class HealthController(HealthRepository,HealthControllerInterface):
     def __init__(self):
-        pass
+        self.heath_repository = HealthRepository()
 
     def updateHealthModel(self,json_data):
             # print(json_data["id"])
-            health_data = HealthDataProvider(id=json_data["id"])
-            health_data.updateHeathFields(json_data=json_data)
+            self.heath_repository.updateHeathFields(json_data=json_data)
             return "Updated!"

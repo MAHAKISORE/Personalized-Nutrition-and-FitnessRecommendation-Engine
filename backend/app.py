@@ -1,31 +1,31 @@
 from flask import Flask,render_template,request
 from .controller.user_auth import UserAuth
 from .controller.health_controller import HealthController
-from .data_layer.repository.food import Foods
+from .data_layer.repository.food_repository import Foods
 from flask_cors import CORS
+from .view.config import AppConfig
 app = Flask(__name__)
 CORS(app)
 
 
-@app.route("/")
+@app.route(AppConfig.start_url)
 def hello_world():
     return render_template("signIn_login/main.html")
 
 
-@app.route("/signIn",methods=['GET','POST'])
+@app.route(AppConfig.signIn_url,methods=['GET','POST'])
 
 def page():
     auth = UserAuth()
     if(request.method == "GET"):
-      
         return render_template("register.html")
     if(request.method == "POST"):
-        body = request.get_json()
+        body = request.get_json()   
         res = auth.signIn(body)
         return res
     return
 
-@app.route("/login",methods=['GET','POST'])
+@app.route(AppConfig.login_url,methods=['GET','POST'])
 def login():
     auth = UserAuth()
     if(request.method== "POST"):
@@ -36,13 +36,13 @@ def login():
         return "hello world"
 
 
-@app.route('/search',methods=['GET'])
+@app.route(AppConfig.search_url,methods=['GET'])
 def search():
     name = request.args.get('name')
     sorted_list = Foods().search_data(name)
     return sorted_list
 
-@app.route('/user/healthUpdate',methods=['POST'])
+@app.route(AppConfig.health_update_url,methods=['POST'])
 def update():
     body = request.get_json()
     res = HealthController().updateHealthModel(body)
@@ -51,4 +51,3 @@ def update():
     
 
 app.run(debug=True)
-print("hello")

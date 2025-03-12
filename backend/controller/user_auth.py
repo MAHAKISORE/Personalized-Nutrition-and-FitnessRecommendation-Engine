@@ -1,4 +1,4 @@
-from ..data_layer.repository.user import UserRepository
+from ..data_layer.repository.user_repository import UserRepository
 from ..data_layer.Models.user_model import UserModel
 from abc import ABC, abstractmethod
 

@@ -2,11 +2,12 @@ from .model import ModelInterface
 
 class FoodModel(ModelInterface):
     def __init__(self,id:str = None,name:str = None,energy:float= None,calorie:float=None,protien:float = None):
-        self.id = id
-        self.name = name,
-        self.energy = energy
-        self.calorie = calorie,
-        self.protien = protien
+        #instance variables
+        self.id:int = id
+        self.name:str = name,
+        self.energy:float = energy
+        self.calorie:float = calorie,
+        self.protien:float = protien
     
     def toDatabase(self, json_data):
         data = self.fromJson(json_data)

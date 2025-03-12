@@ -3,24 +3,24 @@ from .user_model import UserModel
 
 class HealthModel(UserModel,ModelInterface):
     def __init__(self,height:float=None,age:int = None,weight:float = None,bmi:float = None,allergy:int = None,diabetes:int=None,hyper_tension:int=None,gender:str = None):
-        super().__init__()
-        self.height = height
-        self.weight = weight
-        self.age = age
-        self.bmi = bmi
-        self.allergy = allergy
-        self.diabetes = diabetes
-        self.hyper_tension = hyper_tension
-        self.gender = gender
+        super().__init__() #initializing the parent class
+        self.height:float = height
+        self.weight:float = weight
+        self.age:int = age
+        self.bmi:float = bmi
+        self.allergy:int = allergy
+        self.diabetes:int = diabetes
+        self.hyper_tension:int = hyper_tension
+        self.gender:str = gender
     
-    def __str__(self):
-        return str(self.age)
+    # def __str__(self):
+    #     return str(self.age)
     
 
-    @classmethod
+    @classmethod 
     def fromJson(health, json_data):
         return health(
-            height = json_data.get("height"),
+            height = json_data.get("height"), 
             weight = json_data.get("weight"),
             age = json_data.get("age"),
             allergy = json_data.get("allergy"),

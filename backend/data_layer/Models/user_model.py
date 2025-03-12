@@ -2,14 +2,11 @@ import random
 from .model import ModelInterface
 
 class UserModel(ModelInterface):
-    def __init__(self,id:str = None,name:str = None,age:int = None,height:float=None,weight:float=None,email:str = None,gender:str = None):
-        self.id = id
+    def __init__(self,id:int = None,name:str = None,email:str = None):
+        self.id:int = id
         self.name:str = name
-        self.age:int = age
-        self.height:float = height
-        self.weight:float = weight
-        self.email:int = email
-        self.gender:str = gender
+        self.email:str = email
+      
 
     def toDatabase(self,json_data):
         id = random.randint(1000,99999)
@@ -36,12 +33,9 @@ class UserModel(ModelInterface):
     def fromJson(user,json_data):
         print(json_data.get("name"))
         return user(
+            id = json_data.get("id"),
             name=json_data.get("name"),
-            age=json_data.get("age"),
-            height = json_data.get("height"),
-            weight = json_data.get("weight"),
             email = json_data.get("email"),
-            gender = json_data.get("gender")
             ) 
     
 
