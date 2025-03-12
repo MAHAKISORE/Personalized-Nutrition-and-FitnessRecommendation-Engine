@@ -1,0 +1,33 @@
+digraph "classes_Nutrify" {
+rankdir=BT
+charset="utf-8"
+"backend.view.config.AppConfig" [color="black", fontcolor="black", label=<{AppConfig|health_update_url : str<br ALIGN="LEFT"/>home : str<br ALIGN="LEFT"/>login_url : str<br ALIGN="LEFT"/>search_url : str<br ALIGN="LEFT"/>signIn_url : str<br ALIGN="LEFT"/>start_url : str<br ALIGN="LEFT"/>|}>, shape="record", style="solid"];
+"backend.data_layer.repository.db.DataBase" [color="black", fontcolor="black", label=<{DataBase|<br ALIGN="LEFT"/>|close()<br ALIGN="LEFT"/>createTables()<br ALIGN="LEFT"/>deleteTable()<br ALIGN="LEFT"/>}>, shape="record", style="solid"];
+"backend.data_layer.Models.food_model.FoodModel" [color="black", fontcolor="black", label=<{FoodModel|calorie : float<br ALIGN="LEFT"/>energy :   [float]<br ALIGN="LEFT"/>id :   [int]<br ALIGN="LEFT"/>name : str<br ALIGN="LEFT"/>protien :   [float]<br ALIGN="LEFT"/>|fromJson(json_data)<br ALIGN="LEFT"/>}>, shape="record", style="solid"];
+"backend.data_layer.repository.food_repository.Foods" [color="black", fontcolor="black", label=<{Foods|<br ALIGN="LEFT"/>|getData()<br ALIGN="LEFT"/>search_data(query)<br ALIGN="LEFT"/>}>, shape="record", style="solid"];
+"backend.controller.health_controller.HealthController" [color="black", fontcolor="black", label=<{HealthController|heath_repository<br ALIGN="LEFT"/>|updateHealthModel(json_data)<br ALIGN="LEFT"/>}>, shape="record", style="solid"];
+"backend.controller.health_controller.HealthControllerInterface" [color="black", fontcolor="black", label=<{HealthControllerInterface|<br ALIGN="LEFT"/>|<I>updateHealthModel</I>(json_data)<br ALIGN="LEFT"/>}>, shape="record", style="solid"];
+"backend.data_layer.Models.health_model.HealthModel" [color="black", fontcolor="black", label=<{HealthModel|age :   [int]<br ALIGN="LEFT"/>allergy :   [int]<br ALIGN="LEFT"/>bmi :   [float]<br ALIGN="LEFT"/>diabetes :   [int]<br ALIGN="LEFT"/>gender :   [str]<br ALIGN="LEFT"/>height :   [float]<br ALIGN="LEFT"/>hyper_tension :   [int]<br ALIGN="LEFT"/>weight :   [float]<br ALIGN="LEFT"/>|fromJson(json_data)<br ALIGN="LEFT"/>}>, shape="record", style="solid"];
+"backend.data_layer.repository.health_repository.HealthRepository" [color="black", fontcolor="black", label=<{HealthRepository|<br ALIGN="LEFT"/>|bmi(height, weight)<br ALIGN="LEFT"/>updateHeathFields(json_data)<br ALIGN="LEFT"/>}>, shape="record", style="solid"];
+"backend.data_layer.repository.health_repository.HeatlthRepositoryInterface" [color="black", fontcolor="black", label=<{HeatlthRepositoryInterface|<br ALIGN="LEFT"/>|<I>bmi</I>()<br ALIGN="LEFT"/><I>updateHeathFields</I>()<br ALIGN="LEFT"/>}>, shape="record", style="solid"];
+"backend.data_layer.repository.jaro.JaroWrinklerSearching" [color="black", fontcolor="black", label=<{JaroWrinklerSearching|datas : list<br ALIGN="LEFT"/>|hybrid_search(query, top_n)<br ALIGN="LEFT"/>jaro_similarity(s1, s2)<br ALIGN="LEFT"/>jaro_winkler_similarity(s1, s2, prefix_scale)<br ALIGN="LEFT"/>}>, shape="record", style="solid"];
+"backend.data_layer.Models.model.ModelInterface" [color="black", fontcolor="black", label=<{ModelInterface|<br ALIGN="LEFT"/>|<I>fromJson</I>(data)<br ALIGN="LEFT"/>jsonToTuple(json_data)<br ALIGN="LEFT"/><I>toDatabase</I>(json_data)<br ALIGN="LEFT"/>}>, shape="record", style="solid"];
+"backend.data_layer.Models.model.TupleConversion" [color="black", fontcolor="black", label=<{TupleConversion|columns<br ALIGN="LEFT"/>values<br ALIGN="LEFT"/>|}>, shape="record", style="solid"];
+"backend.controller.user_auth.UserAuth" [color="black", fontcolor="black", label=<{UserAuth|<br ALIGN="LEFT"/>|login(json_data)<br ALIGN="LEFT"/>signIn(json_data)<br ALIGN="LEFT"/>}>, shape="record", style="solid"];
+"backend.controller.user_auth.UserAuthInterface" [color="black", fontcolor="black", label=<{UserAuthInterface|<br ALIGN="LEFT"/>|<I>login</I>(json_data)<br ALIGN="LEFT"/><I>signIn</I>(json_data)<br ALIGN="LEFT"/>}>, shape="record", style="solid"];
+"backend.data_layer.Models.user_model.UserModel" [color="black", fontcolor="black", label=<{UserModel|email :   [str]<br ALIGN="LEFT"/>id :   [int]<br ALIGN="LEFT"/>name :   [str]<br ALIGN="LEFT"/>|fromJson(json_data)<br ALIGN="LEFT"/>toDatabase(json_data)<br ALIGN="LEFT"/>}>, shape="record", style="solid"];
+"backend.data_layer.repository.user_repository.UserRepository" [color="black", fontcolor="black", label=<{UserRepository|<br ALIGN="LEFT"/>|getUser(field, value)<br ALIGN="LEFT"/>signIn(json_data)<br ALIGN="LEFT"/>}>, shape="record", style="solid"];
+"backend.controller.health_controller.HealthController" -> "backend.controller.health_controller.HealthControllerInterface" [arrowhead="empty", arrowtail="none"];
+"backend.controller.health_controller.HealthController" -> "backend.data_layer.repository.health_repository.HealthRepository" [arrowhead="empty", arrowtail="none"];
+"backend.controller.user_auth.UserAuth" -> "backend.controller.user_auth.UserAuthInterface" [arrowhead="empty", arrowtail="none"];
+"backend.data_layer.Models.food_model.FoodModel" -> "backend.data_layer.Models.model.ModelInterface" [arrowhead="empty", arrowtail="none"];
+"backend.data_layer.Models.health_model.HealthModel" -> "backend.data_layer.Models.model.ModelInterface" [arrowhead="empty", arrowtail="none"];
+"backend.data_layer.Models.health_model.HealthModel" -> "backend.data_layer.Models.user_model.UserModel" [arrowhead="empty", arrowtail="none"];
+"backend.data_layer.Models.user_model.UserModel" -> "backend.data_layer.Models.model.ModelInterface" [arrowhead="empty", arrowtail="none"];
+"backend.data_layer.repository.food_repository.Foods" -> "backend.data_layer.repository.db.DataBase" [arrowhead="empty", arrowtail="none"];
+"backend.data_layer.repository.health_repository.HealthRepository" -> "backend.data_layer.repository.health_repository.HeatlthRepositoryInterface" [arrowhead="empty", arrowtail="none"];
+"backend.data_layer.repository.health_repository.HealthRepository" -> "backend.data_layer.repository.user_repository.UserRepository" [arrowhead="empty", arrowtail="none"];
+"backend.data_layer.repository.user_repository.UserRepository" -> "backend.data_layer.repository.db.DataBase" [arrowhead="empty", arrowtail="none"];
+"backend.data_layer.repository.health_repository.HealthRepository" -> "backend.controller.health_controller.HealthController" [arrowhead="diamond", arrowtail="none", fontcolor="green", label="heath_repository", style="solid"];
+"backend.data_layer.repository.user_repository.UserRepository" -> "backend.controller.user_auth.UserAuth" [arrowhead="diamond", arrowtail="none", fontcolor="green", label="__data", style="solid"];
+}

@@ -10,7 +10,7 @@ CORS(app)
 
 @app.route(AppConfig.start_url)
 def hello_world():
-    return render_template("signIn_login/main.html")
+    return {"name":"hello there!"}
 
 
 @app.route(AppConfig.signIn_url,methods=['GET','POST'])
@@ -22,7 +22,7 @@ def page():
     if(request.method == "POST"):
         body = request.get_json()   
         res = auth.signIn(body)
-        return res
+        return {"id":res}
     return
 
 @app.route(AppConfig.login_url,methods=['GET','POST'])
@@ -49,5 +49,4 @@ def update():
     return res
     
     
-
 app.run(debug=True)

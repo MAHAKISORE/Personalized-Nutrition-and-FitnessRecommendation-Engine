@@ -25,6 +25,7 @@ class ModelInterface(ABC):
         pass
     
     #genralising for converting json data to tuple 
+    #concrete method
     def jsonToTuple(self,json_data):
         keys = []
         values = []

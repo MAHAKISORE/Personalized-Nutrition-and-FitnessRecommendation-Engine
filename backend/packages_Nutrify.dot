@@ -1,0 +1,35 @@
+digraph "packages_Nutrify" {
+rankdir=BT
+charset="utf-8"
+"backend" [color="black", label=<backend>, shape="box", style="solid"];
+"backend.app" [color="black", label=<backend.app>, shape="box", style="solid"];
+"backend.controller" [color="black", label=<backend.controller>, shape="box", style="solid"];
+"backend.controller.health_controller" [color="black", label=<backend.controller.health_controller>, shape="box", style="solid"];
+"backend.controller.user_auth" [color="black", label=<backend.controller.user_auth>, shape="box", style="solid"];
+"backend.data_layer" [color="black", label=<backend.data_layer>, shape="box", style="solid"];
+"backend.data_layer.Models" [color="black", label=<backend.data_layer.Models>, shape="box", style="solid"];
+"backend.data_layer.Models.food_model" [color="black", label=<backend.data_layer.Models.food_model>, shape="box", style="solid"];
+"backend.data_layer.Models.health_model" [color="black", label=<backend.data_layer.Models.health_model>, shape="box", style="solid"];
+"backend.data_layer.Models.model" [color="black", label=<backend.data_layer.Models.model>, shape="box", style="solid"];
+"backend.data_layer.Models.user_model" [color="black", label=<backend.data_layer.Models.user_model>, shape="box", style="solid"];
+"backend.data_layer.repository" [color="black", label=<backend.data_layer.repository>, shape="box", style="solid"];
+"backend.data_layer.repository.db" [color="black", label=<backend.data_layer.repository.db>, shape="box", style="solid"];
+"backend.data_layer.repository.food_repository" [color="black", label=<backend.data_layer.repository.food_repository>, shape="box", style="solid"];
+"backend.data_layer.repository.health_repository" [color="black", label=<backend.data_layer.repository.health_repository>, shape="box", style="solid"];
+"backend.data_layer.repository.jaro" [color="black", label=<backend.data_layer.repository.jaro>, shape="box", style="solid"];
+"backend.data_layer.repository.user_repository" [color="black", label=<backend.data_layer.repository.user_repository>, shape="box", style="solid"];
+"backend.view" [color="black", label=<backend.view>, shape="box", style="solid"];
+"backend.view.config" [color="black", label=<backend.view.config>, shape="box", style="solid"];
+"backend.app" -> "backend.controller.health_controller" [arrowhead="open", arrowtail="none"];
+"backend.app" -> "backend.controller.user_auth" [arrowhead="open", arrowtail="none"];
+"backend.app" -> "backend.data_layer.repository.food_repository" [arrowhead="open", arrowtail="none"];
+"backend.app" -> "backend.view.config" [arrowhead="open", arrowtail="none"];
+"backend.data_layer.Models.food_model" -> "backend.data_layer.Models.model" [arrowhead="open", arrowtail="none"];
+"backend.data_layer.Models.health_model" -> "backend.data_layer.Models.model" [arrowhead="open", arrowtail="none"];
+"backend.data_layer.Models.health_model" -> "backend.data_layer.Models.user_model" [arrowhead="open", arrowtail="none"];
+"backend.data_layer.Models.user_model" -> "backend.data_layer.Models.model" [arrowhead="open", arrowtail="none"];
+"backend.data_layer.repository.food_repository" -> "backend.data_layer.repository.db" [arrowhead="open", arrowtail="none"];
+"backend.data_layer.repository.food_repository" -> "backend.data_layer.repository.jaro" [arrowhead="open", arrowtail="none"];
+"backend.data_layer.repository.health_repository" -> "backend.data_layer.repository.user_repository" [arrowhead="open", arrowtail="none"];
+"backend.data_layer.repository.user_repository" -> "backend.data_layer.repository.db" [arrowhead="open", arrowtail="none"];
+}

@@ -7,6 +7,12 @@
     <link rel="stylesheet" href="styles/register.css">
 
     <script type="text/javascript">
+        window.onload = function(){
+           var id =  localStorage.getItem("id")
+           if(id){
+            window.location.href = "/home/sharvesh/Desktop/Personalized-Nutrition-and-FitnessRecommendation-Engine/Frontend/home.html"
+        }
+        }
            async function register(){
             const name = document.getElementById("username").value
             const email = document.getElementById("email").value
@@ -21,8 +27,11 @@
                     email:email,
                     pwd:password
                 })
-            }).then(()=>{
-                window.location.href = "file:///home/sharvesh/Desktop/Personalized-Nutrition-and-FitnessRecommendation-Engine/Frontend/signIn_login/login.html"
+            }).then((response)=>response.json())
+            .then((response)=>{
+                var data = JSON.stringify(response)
+                localStorage.setItem("id",response["id"])
+                window.location.href = "/home/sharvesh/Desktop/Personalized-Nutrition-and-FitnessRecommendation-Engine/Fronten/singIn_login/age_entry.html"
             })
           
            }

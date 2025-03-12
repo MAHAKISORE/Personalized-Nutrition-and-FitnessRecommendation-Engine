@@ -29,9 +29,9 @@ class HealthModel(UserModel,ModelInterface):
             gender = json_data.get("gender")
         )
 
-    def toDatabase(self, json_data,id):
-        data = self.fromJson(json_data)
-        return (data.height,data.weight,data.age,data.bmi,data.allergy,data.diabetes,data.hyper_tension,id)
+    # def toDatabase(self, json_data,id):
+    #     data = self.fromJson(json_data)
+    #     return (data.height,data.weight,data.age,data.bmi,data.allergy,data.diabetes,data.hyper_tension,id)
     
     # @classmethod
     # def fromDatabase(user,data):

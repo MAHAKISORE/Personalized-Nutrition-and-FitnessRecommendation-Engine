@@ -1,0 +1,19 @@
+<html>
+    <script type="text/javascript">
+        window.onload = function(){
+            var id = localStorage.getItem("id")
+            if(!id){
+                window.location.href = "/home/sharvesh/Desktop/Personalized-Nutrition-and-FitnessRecommendation-Engine/Frontend/signIn_login/main.html"
+            }
+        }
+        function logout(){
+            localStorage.removeItem("id")
+            window.location.href = "/home/sharvesh/Desktop/Personalized-Nutrition-and-FitnessRecommendation-Engine/Frontend/signIn_login/main.html"
+
+        }
+
+    </script>
+    <body>
+        <button onclick="logout()">Logout</button>
+    </body>
+</html>

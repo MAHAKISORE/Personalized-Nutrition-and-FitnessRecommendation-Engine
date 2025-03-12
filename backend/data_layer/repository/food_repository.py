@@ -22,4 +22,4 @@ class Foods(DataBase):
         sorted_list = jaro_search.hybrid_search(query=query)
         return sorted_list
     
-    
+

@@ -19,10 +19,12 @@ class UserAuth(UserAuthInterface):
 
     def signIn(self,json_data):
             model = UserModel().fromJson(json_data=json_data)
+            
             user = self.__data.getUser(field='email',value=model.email)
             if(user == None):
-                self.__data.signIn(json_data=json_data)
-                return "User successfuly created"
+                user = self.__data.signIn(json_data=json_data)
+                print(user)
+                return user
             else:
                 return "User already exist"
        

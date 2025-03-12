@@ -20,8 +20,12 @@ class UserRepository(DataBase):
         # user_with_pwd = tuple(temp) 
 
         self._cursor.execute(f"INSERT INTO Users{user2.columns} VALUES{user2.values}") #Inserting rows into the User table
+        id = self._cursor.lastrowid
+        
+        # print(id)
         self._conn.commit()
         self.close()
+        return id
 
     def getUser(self,field,value):
         query = 'SELECT * FROM Users WHERE {}=\'{}\''.format(field,value)
