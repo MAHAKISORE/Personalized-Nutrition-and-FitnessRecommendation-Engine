@@ -7,7 +7,7 @@ class HeatlthRepositoryInterface(ABC):
      def bmi(self):
           pass
      @abstractmethod
-     def updateHeathFields(self):
+     def updateHealthFields(self):
           pass
      
 
@@ -18,7 +18,7 @@ class HealthRepository(UserRepository,HeatlthRepositoryInterface):
     def bmi(self,height,weight):
         return weight/(height*height)
     
-    def updateHeathFields(self,json_data):
+    def updateHealthFields(self,json_data):
 
         try:
             health_data:HealthModel = HealthModel.fromJson(json_data=json_data)

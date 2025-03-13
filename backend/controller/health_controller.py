@@ -9,11 +9,14 @@ class HealthControllerInterface(ABC):
           pass
      
 
-class HealthController(HealthRepository,HealthControllerInterface):
+class HealthController(HealthControllerInterface):
     def __init__(self):
         self.heath_repository = HealthRepository()
 
     def updateHealthModel(self,json_data):
             # print(json_data["id"])
-            self.heath_repository.updateHeathFields(json_data=json_data)
-            return "Updated!"
+            if(self.heath_repository.getUser("id",json_data["id"])): 
+                health = self.heath_repository.updateHealthFields(json_data=json_data)
+                return "Updated"
+            else:
+                 return "Invalid id"
