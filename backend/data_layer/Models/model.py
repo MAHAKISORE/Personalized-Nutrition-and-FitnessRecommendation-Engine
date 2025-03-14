@@ -6,6 +6,8 @@ class TupleConversion:
         self.columns =  columns
         self.values= values
 
+
+
 #Standard Blueprint for all models
 class ModelInterface(ABC):
 
@@ -26,6 +28,7 @@ class ModelInterface(ABC):
     
     #genralising for converting json data to tuple 
     #concrete method
+   
     def jsonToTuple(self,json_data):
         keys = []
         values = []
@@ -36,9 +39,22 @@ class ModelInterface(ABC):
         keys = str(tuple(keys))
         values = str(tuple(values))
         return TupleConversion(values=values,columns=keys)
-
-
-
+    
+   
+    def jsonToUpdate(json_data,query_value):
+        keys = []
+        values = []
+        for k in json_data.keys():
+            keys.append(k)
+            values.append(json_data[k])
+        
+        update:str = ""
+        for i in range(0,len(keys)):
+            update = update + f"{keys[i]}=?"
+            if (i != len(keys)-1):
+                update = update + ","
+        values.append(query_value)
+        return TupleConversion(columns=update,values=tuple(values))
 
 
 

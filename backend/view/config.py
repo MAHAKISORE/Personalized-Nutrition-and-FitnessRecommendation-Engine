@@ -6,3 +6,14 @@ class AppConfig:
     home = "/home"
     search_url = "/search"
     health_update_url = "/user/healthUpdate"
+    
+    #status codes
+    created_code = 201
+    ok_code = 200
+    not_found_code = 404
+    unauthorized_code = 401
+    bad_request_code = 404
+    conflict_code = 409
+    data_invalid = 422
+        
+

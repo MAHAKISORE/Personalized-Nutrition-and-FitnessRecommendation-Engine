@@ -1,6 +1,7 @@
 from ..data_layer.repository.user_repository import UserRepository
 from ..data_layer.Models.user_model import UserModel
 from abc import ABC, abstractmethod
+from ..view.config import AppConfig
 
 
 class UserAuthInterface(ABC):
@@ -24,9 +25,9 @@ class UserAuth(UserAuthInterface):
             if(user == None):
                 user = self.__data.signIn(json_data=json_data)
                 print(user)
-                return user
+                return {"id":user},201
             else:
-                return "User already exist"
+                return {"msg":"User already exist"},AppConfig.conflict_code
        
         
     def login(self,json_data):
@@ -35,12 +36,12 @@ class UserAuth(UserAuthInterface):
 
         user = self.__data.getUser("email",email)
         if(user == None):
-            return "Email has not been registered yet"
+            return {"ms":"Email has not been registered yet"},AppConfig.bad_request_code
         
         if(user[6] == pwd):
-            return "User verified"
+            return {"id":user[0]},AppConfig.ok_code
         else:
-            return "Wrong pwd"
+            return {"msg":"Wrong pwd"},AppConfig.unauthorized_code
     
         
         

@@ -1,6 +1,7 @@
 from ..data_layer.repository.health_repository import HealthRepository
 from ..data_layer.repository.user_repository import UserRepository
 from abc import ABC,abstractmethod
+from ..view.config import AppConfig
 
 
 class HealthControllerInterface(ABC):
@@ -16,7 +17,7 @@ class HealthController(HealthControllerInterface):
     def updateHealthModel(self,json_data):
             # print(json_data["id"])
             if(self.heath_repository.getUser("id",json_data["id"])): 
-                health = self.heath_repository.updateHealthFields(json_data=json_data)
-                return "Updated"
+                self.heath_repository.updateHealthFields(json_data=json_data)
+                return {"msg":"Updated"},AppConfig.ok_code
             else:
-                 return "Invalid id"
+                 return {"msg":"Invalid id"},AppConfig.unauthorized_code

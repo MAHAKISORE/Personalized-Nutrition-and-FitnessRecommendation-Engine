@@ -26,7 +26,8 @@ class HealthModel(UserModel,ModelInterface):
             allergy = json_data.get("allergy"),
             diabetes=  json_data.get("diabetes"),
             hyper_tension = json_data.get("hyper_tension"),
-            gender = json_data.get("gender")
+            gender = json_data.get("gender"),
+            bmi = json_data.get("bmi")
         )
 
     # def toDatabase(self, json_data,id):

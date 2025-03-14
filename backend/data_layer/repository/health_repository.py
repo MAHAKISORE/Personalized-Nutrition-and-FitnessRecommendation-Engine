@@ -20,15 +20,15 @@ class HealthRepository(UserRepository,HeatlthRepositoryInterface):
     
     def updateHealthFields(self,json_data):
 
-        try:
-            health_data:HealthModel = HealthModel.fromJson(json_data=json_data)
-            health_data.bmi =self.bmi(height=health_data.height,weight=health_data.weight)
-            self._cursor.execute("UPDATE Users SET gender=?,height=?,weight=?,age=?,bmi=?,allergy=?,diabetes=?,hyper_tension=? WHERE id=?",(health_data.gender,health_data.height,health_data.weight,health_data.age,health_data.bmi,health_data.allergy,health_data.diabetes,health_data.hyper_tension,json_data["id"]))
+        
+            updates = HealthModel.jsonToUpdate(json_data=json_data,query_value=json_data["id"])
+            print(f"UPDATE Users SET {updates.columns} WHERE id=?",updates.values)
+            # health_data:HealthModel = HealthModel.fromJson(json_data=json_data)
+            # health_data.bmi =self.bmi(height=health_data.height,weight=health_data.weight)
+            self._cursor.execute(f"UPDATE Users SET {updates.columns} WHERE id=?",updates.values)
             self._conn.commit()
-        except Exception as e:
-                print(e)
-        finally:
-             self._conn.close()
+       
+        #      self._conn.close()
              
         
 

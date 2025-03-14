@@ -1,4 +1,4 @@
-from flask import Flask,render_template,request
+from flask import Flask,render_template,request,make_response
 from .controller.user_auth import UserAuth
 from .controller.health_controller import HealthController
 from .data_layer.repository.food_repository import Foods
@@ -22,8 +22,9 @@ def page():
     if(request.method == "POST"):
         body = request.get_json()   
         res = auth.signIn(body)
-        return {"id":res}
-    return
+        response = make_response(res)
+        return response
+    
 
 @app.route(AppConfig.login_url,methods=['GET','POST'])
 def login():

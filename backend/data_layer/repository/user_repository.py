@@ -4,7 +4,7 @@ from ..Models.user_model import UserModel
 #User class handles the CRUD operations in database 
 class UserRepository(DataBase):
     def __init__(self):
-        super().__init__() #initializing the parent class
+        # super().__init__() #initializing the parent class
         self._cursor = self._conn.cursor()
 
 
@@ -24,7 +24,7 @@ class UserRepository(DataBase):
         
         # print(id)
         self._conn.commit()
-        self.close()
+        # self.close()
         return id
 
     def getUser(self,field,value):
