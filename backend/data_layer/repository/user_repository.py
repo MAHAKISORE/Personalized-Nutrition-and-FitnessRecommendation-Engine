@@ -1,11 +1,24 @@
 from .db import DataBase
 from ..Models.user_model import UserModel
 
+
 #User class handles the CRUD operations in database 
 class UserRepository(DataBase):
-    def __init__(self):
-        # super().__init__() #initializing the parent class
-        self._cursor = self._conn.cursor()
+    _cursor = None
+    
+    def __new__(cls):
+        super(DataBase).__init__()
+        if not hasattr(cls,'user_instance'):
+            if(cls._cursor is None):
+                if(cls._conn is None):
+                    cls.connect()                    
+                cls._cursor = cls._conn.cursor()
+            cls.user_instance = super(UserRepository,cls).__new__(cls)
+        return cls.user_instance 
+    
+    # def __init__(self):
+    #     # super().__init__() #initializing the parent class
+    #     self._cursor = self._conn.cursor()
 
 
     def signIn(self,json_data):

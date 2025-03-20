@@ -25,5 +25,7 @@ class FoodModel(ModelInterface):
             energy = json_data.get("energy"),
             calorie = json_data.get("calorie"),
             protien = json_data.get("protien"),)
-    
-            
+    @classmethod
+    def stringToList(food,text:str):
+            converted_data = [[int(y) for y in x.split(",")] for x in text.split(";")]
+            return converted_data
