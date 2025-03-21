@@ -1,4 +1,6 @@
-class JaroWrinklerSearching:
+import json
+
+class JaroWrinklerSearching():
     def __init__(self,datas:list):
         self.datas:list = datas
 
@@ -67,7 +69,9 @@ class JaroWrinklerSearching:
         results = []
 
         for name in self.datas:
-            name_lower = name.lower()
+            
+            name_lower = str(name.name)
+            print(name_lower)
 
             # Compute Jaro-Winkler similarity
             similarity = self.jaro_winkler_similarity(query_lower, name_lower)
@@ -83,12 +87,18 @@ class JaroWrinklerSearching:
             # **Substring Boost:** If the query appears anywhere in the name
             if query_lower in name_lower:
                 similarity += 0.1  # Small boost for partial matches
-
-            results.append((name, similarity))
+            name.similarity = similarity
+            results.append(name)
 
         # Sort by similarity score (higher is better)
-        results.sort(key=lambda x: x[1], reverse=True)
-
-        return [name for name, score in results[:top_n]]  # Return top matches
+    
+        # results.sort(key=lambda x: x.similarity, reverse=True)
+        for i in range(0,len(results)):
+            for j in range(0,len(results)-1):
+                if(results[j].similarity < results[j+1].similarity):
+                    temp = results[j]
+                    results[j] =  results[j+1]
+                    results[j+1] = temp
+        return results[:top_n]  # Return top matches
 
 

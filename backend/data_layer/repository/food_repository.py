@@ -2,6 +2,7 @@ from .db import DataBase
 from .jaro import JaroWrinklerSearching
 from ..Models.food_model import FoodModel
 from abc import ABC,abstractmethod
+from ..Models.food_model import FoodModel
 
 
 class FoodRepositoryInterface(ABC):
@@ -30,18 +31,31 @@ class FoodRepository(FoodRepositoryInterface,DataBase):
 
     def getData(self):
         datas = []
-        task = "SELECT food_name FROM Foods"
+        task = "SELECT * FROM Foods"
         self._cursor.execute(task)
         data:list = self._cursor.fetchall()
         for i in data:
-            for k in i:
-                datas.append(k)
+            # print(i)
+            model:FoodModel = FoodModel.fromJson(i)
+            model.name = str(model.name[0])
+            # print(i.keys())
+         
+            datas.append(model)
+            print(type(model.name))
+        
+                # datas.append(k)
+
         return datas
+    
     def search_data(self,query):
-        data = self.getData()
-        jaro_search = JaroWrinklerSearching(data)
+        send_data = self.getData()
+        jaro_search = JaroWrinklerSearching(send_data)
         sorted_list = jaro_search.hybrid_search(query=query)
-        return sorted_list
+        arr = []
+        for data in sorted_list:
+            arr.append(data.toJson())
+
+        return arr
 
 
     def updateFoodField(self,json_data):

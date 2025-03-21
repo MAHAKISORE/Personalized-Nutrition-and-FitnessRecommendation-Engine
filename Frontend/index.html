@@ -1,0 +1,216 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Weekly Meal Plan</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f5fdf5;
+            color: #1a3e1a;
+            padding: 20px;
+        }
+        .container {
+            max-width: 800px;
+            margin: auto;
+            background: white;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+        }
+        h1 {
+            text-align: center;
+            color: #2a7a2a;
+        }
+        .day {
+            background: #e6f5e6;
+            padding: 15px;
+            margin-bottom: 15px;
+            border-radius: 10px;
+        }
+        .meal {
+            background: white;
+            padding: 10px;
+            margin-top: 10px;
+            border-radius: 5px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+        }
+        .input-container {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        .search-box {
+            flex-grow: 1;
+            padding: 8px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+        .add-button {
+            background-color: #2a7a2a;
+            color: white;
+            border: none;
+            padding: 8px 12px;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        .food-list {
+            list-style: none;
+            padding: 0;
+        }
+        .food-list li {
+            background: #d4eecf;
+            padding: 5px;
+            margin: 3px 0;
+            border-radius: 5px;
+            display: flex;
+            justify-content: space-between;
+        }
+        .suggestions {
+            position: absolute;
+            background: white;
+            border: 1px solid #ccc;
+            list-style: none;
+            padding: 0;
+            max-height: 100px;
+            overflow-y: auto;
+            width: 200px;
+            display: none;
+            z-index: 100;
+        }
+        .suggestions li {
+            padding: 5px;
+            cursor: pointer;
+        }
+        .suggestions li:hover {
+            background: #d4eecf;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Weekly Meal Plan</h1>
+        <div id="week-plan"></div>
+    </div>
+
+    <script>
+        // Predefined food items for suggestions
+        const foodItems = ["Apple", "Banana", "Oatmeal", "Eggs", "Toast", "Pancakes", "Rice", "Chicken", "Salad", "Pasta", "Fish", "Soup", "Steak", "Biryani", "Pizza"];
+
+        const days = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'];
+        const meals = ['Breakfast', 'Lunch', 'Dinner'];
+
+        const weekPlan = document.getElementById('week-plan');
+
+        days.forEach(day => {
+            const dayDiv = document.createElement('div');
+            dayDiv.classList.add('day');
+            dayDiv.innerHTML = `<h3>${day}</h3>`;
+
+            meals.forEach(meal => {
+                const mealDiv = document.createElement('div');
+                mealDiv.classList.add('meal');
+
+                mealDiv.innerHTML = `
+                    <span><strong>${meal}</strong></span>
+                    <div class="input-container">
+                        <input type="text" class="search-box" placeholder="Search food..." autocomplete="off">
+                        <button class="add-button">+</button>
+                    </div>
+                    <ul class="suggestions"></ul>
+                    <ul class="food-list"></ul>
+                `;
+
+                dayDiv.appendChild(mealDiv);
+            });
+
+            weekPlan.appendChild(dayDiv);
+        });
+
+        // Add event listeners for autocomplete and adding food
+        document.querySelectorAll('.search-box').forEach(input => {
+            const suggestionsBox = input.parentNode.nextElementSibling;
+
+            input.addEventListener('input', function () {
+                const query = this.value.toLowerCase();
+                suggestionsBox.innerHTML = '';
+                if (query.length > 0) {
+                    const suggestions = foodItems
+                        .map(food => ({ name: food, score: jaroWinkler(query, food.toLowerCase()) }))
+                        .sort((a, b) => b.score - a.score)
+                        .filter(item => item.score > 0.7)
+                        .map(item => item.name);
+
+                    if (suggestions.length > 0) {
+                        suggestionsBox.style.display = 'block';
+                        suggestions.forEach(food => {
+                            const li = document.createElement('li');
+                            li.textContent = food;
+                            li.addEventListener('click', function () {
+                                input.value = food;
+                                suggestionsBox.innerHTML = '';
+                                suggestionsBox.style.display = 'none';
+                            });
+                            suggestionsBox.appendChild(li);
+                        });
+                    } else {
+                        suggestionsBox.style.display = 'none';
+                    }
+                } else {
+                    suggestionsBox.style.display = 'none';
+                }
+            });
+
+            input.addEventListener('blur', function () {
+                setTimeout(() => suggestionsBox.style.display = 'none', 200);
+            });
+        });
+
+        document.querySelectorAll('.add-button').forEach(button => {
+            button.addEventListener('click', function () {
+                const input = this.previousElementSibling;
+                const food = input.value.trim();
+                const foodList = this.parentNode.nextElementSibling.nextElementSibling;
+
+                if (food !== "") {
+                    const li = document.createElement('li');
+                    li.textContent = food;
+                    const removeBtn = document.createElement('button');
+                    removeBtn.textContent = "✖";
+                    removeBtn.style.marginLeft = "10px";
+                    removeBtn.style.cursor = "pointer";
+                    removeBtn.addEventListener('click', () => li.remove());
+                    li.appendChild(removeBtn);
+                    foodList.appendChild(li);
+                    input.value = "";
+                }
+            });
+        });
+
+        // Jaro-Winkler similarity function
+        function jaroWinkler(s1, s2) {
+            let jaro = 0;
+            let prefix = 0;
+            let matchWindow = Math.floor(Math.max(s1.length, s2.length) / 2) - 1;
+            let matches1 = new Array(s1.length).fill(false);
+            let matches2 = new Array(s2.length).fill(false);
+            let matchCount = 0;
+
+            for (let i = 0; i < s1.length; i++) {
+                let start = Math.max(0, i - matchWindow);
+                let end = Math.min(s2.length, i + matchWindow + 1);
+                for (let j = start; j < end; j++) {
+                    if (matches2[j] === false && s1[i] === s2[j]) {
+                        matches1[i] = matches2[j] = true;
+                        matchCount++;
+                        break;
+                    }
+                }
+            }
+
+            return matchCount / Math.max(s1.length, s2.length);
+        }
+    </script>
+</body>
+</html>

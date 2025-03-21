@@ -7,8 +7,9 @@ class FoodModel(ModelInterface):
         self.name:str = name,
         self.energy:float = energy
         self.calorie:float = calorie,
-        self.protien:float = protien
-    
+        self.protien:float = protien,
+        self.similarity:int = None
+ 
     # def toDatabase(self, json_data):
     #     data = self.fromJson(json_data)
     #     return (data.id,data.name,data.calorie,)
@@ -17,14 +18,36 @@ class FoodModel(ModelInterface):
     # def fromDatabase(user,data):
     #     return user(data[0],data[1],data[2],data[3],data[4]) 
     
+    # @classmethod
+    # def fromJson(food,json_data):
+    #     return food(
+    #         id=json_data.get("id"),
+    #         name=json_data.get("name"),
+    #         energy = json_data.get("energy"),
+    #         calorie = json_data.get("calorie"),
+    #         protien = json_data.get("protien"),)
     @classmethod
     def fromJson(food,json_data):
         return food(
-            id=json_data.get("id"),
-            name=json_data.get("name"),
-            energy = json_data.get("energy"),
-            calorie = json_data.get("calorie"),
-            protien = json_data.get("protien"),)
+            id=json_data["food_code"],
+            name=json_data["food_name"],
+            energy = json_data["energy_kj"],
+            calorie = json_data["energy_kcal"],
+            protien = json_data["protein_g"])
+    
+    def toDatabase(self, json_data):
+            pass
+    
+    
+    def toJson(self):
+          return {
+                "id":self.id,
+                "name":self.name,
+                "energy":self.energy,
+                "calorie":self.calorie,
+                "protein":self.protien
+          }
+
     @classmethod
     def stringToList(food,text:str):
             converted_data = [[int(y) for y in x.split(",")] for x in text.split(";")]
