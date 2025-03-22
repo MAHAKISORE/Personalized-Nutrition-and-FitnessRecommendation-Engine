@@ -71,7 +71,7 @@ class JaroWrinklerSearching():
         for name in self.datas:
             
             name_lower = str(name.name)
-            print(name_lower)
+            # print(name_lower)
 
             # Compute Jaro-Winkler similarity
             similarity = self.jaro_winkler_similarity(query_lower, name_lower)

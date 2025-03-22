@@ -95,6 +95,8 @@
     </div>
 
     <script>
+
+        
         // Predefined food items for suggestions
         const foodItems = ["Apple", "Banana", "Oatmeal", "Eggs", "Toast", "Pancakes", "Rice", "Chicken", "Salad", "Pasta", "Fish", "Soup", "Steak", "Biryani", "Pizza"];
 
@@ -136,17 +138,24 @@
                 const query = this.value.toLowerCase();
                 suggestionsBox.innerHTML = '';
                 if (query.length > 0) {
+                     fetch("http://127.0.0.1:5000/search?name="+query).then((response)=>response.json()).then((response)=>{
+                    // alert(JSON.stringify(response))
+                   
+                });
+                var suggestions2 = getFoodSuggestion(query)
+                alert(suggestions2.length)
                     const suggestions = foodItems
                         .map(food => ({ name: food, score: jaroWinkler(query, food.toLowerCase()) }))
                         .sort((a, b) => b.score - a.score)
                         .filter(item => item.score > 0.7)
                         .map(item => item.name);
-
-                    if (suggestions.length > 0) {
+                        
+                    if (suggestions2.length > 0) {
+                        
                         suggestionsBox.style.display = 'block';
-                        suggestions.forEach(food => {
+                        suggestions2.forEach(food => {
                             const li = document.createElement('li');
-                            li.textContent = food;
+                            li.textContent = food["name"];
                             li.addEventListener('click', function () {
                                 input.value = food;
                                 suggestionsBox.innerHTML = '';
@@ -187,6 +196,20 @@
                 }
             });
         });
+
+       async function getFoodSuggestion(query){
+            try{
+               await fetch("http://127.0.0.1:5000/search?name="+query).then((response)=>response.json()).then((response)=>{
+                    // alert(JSON.stringify(response))
+                   
+                    return response
+                });
+               
+
+            }catch(e){
+
+            }
+        }
 
         // Jaro-Winkler similarity function
         function jaroWinkler(s1, s2) {

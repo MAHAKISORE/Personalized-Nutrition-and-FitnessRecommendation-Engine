@@ -41,7 +41,8 @@ class FoodRepository(FoodRepositoryInterface,DataBase):
             # print(i.keys())
          
             datas.append(model)
-            print(type(model.name))
+            # print(model)
+            # print(type(model.name))
         
                 # datas.append(k)
 

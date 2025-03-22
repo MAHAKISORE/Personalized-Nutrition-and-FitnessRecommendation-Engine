@@ -20,7 +20,6 @@ class ModelInterface(ABC):
     # @abstractmethod
     # def fromDatabase(self,data):
     #     pass
-    
 
     @abstractmethod
     def toDatabase(self,json_data):

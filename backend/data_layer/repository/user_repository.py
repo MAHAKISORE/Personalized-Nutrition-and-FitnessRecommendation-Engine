@@ -1,9 +1,21 @@
 from .db import DataBase
 from ..Models.user_model import UserModel
+from abc import ABC,abstractmethod
+
+class UserRepositoryInterface(ABC):
+    
+    @abstractmethod
+    def signIn(self,json_data):
+        pass
+
+    @abstractmethod
+    def getUser(self,field,value):
+        pass
+
 
 
 #User class handles the CRUD operations in database 
-class UserRepository(DataBase):
+class UserRepository(DataBase,UserRepositoryInterface):
     _cursor = None
     
     def __new__(cls):
@@ -46,6 +58,10 @@ class UserRepository(DataBase):
         users = self._cursor.fetchone()
         return users
     
+    def updateUser(self,json_data,id):
+        model = UserModel.jsonToUpdate(json_data=json_data,id=id)
+        self._cursor.execute(f"UPDATE {model.columns}",model.values)
+        
 
         
 
