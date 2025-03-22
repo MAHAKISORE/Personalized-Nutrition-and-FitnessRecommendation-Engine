@@ -73,46 +73,103 @@
             border: 1px solid #ccc;
             list-style: none;
             padding: 0;
-            max-height: 100px;
+            max-height: 150px;
             overflow-y: auto;
             width: 200px;
             display: none;
             z-index: 100;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
         }
         .suggestions li {
-            padding: 5px;
+            padding: 8px;
             cursor: pointer;
         }
         .suggestions li:hover {
             background: #d4eecf;
+        }
+        .submit-container {
+            margin-top: 20px;
+            text-align: center;
+        }
+        .submit-button {
+            background-color: #2a7a2a;
+            color: white;
+            border: none;
+            padding: 12px 24px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 16px;
+            font-weight: bold;
+        }
+        .submit-button:hover {
+            background-color: #1c5e1c;
+        }
+        .response-container {
+            margin-top: 20px;
+            padding: 10px;
+            background-color: #f0f0f0;
+            border-radius: 5px;
+            display: none;
+            white-space: pre-wrap;
+            overflow-x: auto;
+            font-family: monospace;
+        }
+        .plan-id-container {
+            margin-bottom: 20px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        #plan-id {
+            padding: 8px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            width: 100px;
         }
     </style>
 </head>
 <body>
     <div class="container">
         <h1>Weekly Meal Plan</h1>
+        
+        <div class="plan-id-container">
+            <label for="plan-id"><strong>Plan ID:</strong></label>
+            <input type="number" id="plan-id" value="90718" min="1">
+        </div>
+        
         <div id="week-plan"></div>
+        
+        <div class="submit-container">
+            <button id="submit-plan" class="submit-button">Submit Meal Plan</button>
+        </div>
+        
+        <div id="response-display" class="response-container"></div>
     </div>
 
     <script>
-
-        
-        // Predefined food items for suggestions
+        // Predefined food items for fallback
         const foodItems = ["Apple", "Banana", "Oatmeal", "Eggs", "Toast", "Pancakes", "Rice", "Chicken", "Salad", "Pasta", "Fish", "Soup", "Steak", "Biryani", "Pizza"];
 
         const days = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'];
-        const meals = ['Breakfast', 'Lunch', 'Dinner'];
+        const mealTimes = {
+            'Breakfast': 'Morning',
+            'Lunch': 'Afternoon',
+            'Dinner': 'Night'
+        };
 
         const weekPlan = document.getElementById('week-plan');
 
+        // Create the meal plan structure
         days.forEach(day => {
             const dayDiv = document.createElement('div');
             dayDiv.classList.add('day');
+            dayDiv.setAttribute('data-day', day);
             dayDiv.innerHTML = `<h3>${day}</h3>`;
 
-            meals.forEach(meal => {
+            Object.keys(mealTimes).forEach(meal => {
                 const mealDiv = document.createElement('div');
                 mealDiv.classList.add('meal');
+                mealDiv.setAttribute('data-meal', mealTimes[meal]);
 
                 mealDiv.innerHTML = `
                     <span><strong>${meal}</strong></span>
@@ -129,41 +186,63 @@
 
             weekPlan.appendChild(dayDiv);
         });
+ 
+        // Function to get food suggestions from API
+        async function getFoodSuggestions(query) {
+            try {
+                const response = await fetch(`http://127.0.0.1:5000/search?name=${encodeURIComponent(query)}`);
+                if (!response.ok) {
+                    throw new Error('API response was not ok');
+                }
+                return await response.json();
+            } catch (error) {
+                console.error('Error fetching suggestions:', error);
+                // Fallback to local filtering if API fails
+                return foodItems
+                    .filter(food => food.toLowerCase().includes(query.toLowerCase()))
+                    .map(name => ({ 
+                        name: name, 
+                        id: "ASC" + name.slice(0, 2).toUpperCase() + Math.floor(Math.random() * 1000) 
+                    }));
+            }
+        }
 
-        // Add event listeners for autocomplete and adding food
+        // Add event listeners for autocomplete
         document.querySelectorAll('.search-box').forEach(input => {
             const suggestionsBox = input.parentNode.nextElementSibling;
-
-            input.addEventListener('input', function () {
-                const query = this.value.toLowerCase();
+            let currentSuggestions = [];
+            
+            // Handle input changes
+            input.addEventListener('input', async function() {
+                const query = this.value.trim();
                 suggestionsBox.innerHTML = '';
+                
                 if (query.length > 0) {
-                     fetch("http://127.0.0.1:5000/search?name="+query).then((response)=>response.json()).then((response)=>{
-                    // alert(JSON.stringify(response))
-                   
-                });
-                var suggestions2 = getFoodSuggestion(query)
-                alert(suggestions2.length)
-                    const suggestions = foodItems
-                        .map(food => ({ name: food, score: jaroWinkler(query, food.toLowerCase()) }))
-                        .sort((a, b) => b.score - a.score)
-                        .filter(item => item.score > 0.7)
-                        .map(item => item.name);
+                    try {
+                        currentSuggestions = await getFoodSuggestions(query);
                         
-                    if (suggestions2.length > 0) {
-                        
-                        suggestionsBox.style.display = 'block';
-                        suggestions2.forEach(food => {
-                            const li = document.createElement('li');
-                            li.textContent = food["name"];
-                            li.addEventListener('click', function () {
-                                input.value = food;
-                                suggestionsBox.innerHTML = '';
-                                suggestionsBox.style.display = 'none';
+                        if (currentSuggestions && currentSuggestions.length > 0) {
+                            suggestionsBox.style.display = 'block';
+                            
+                            currentSuggestions.forEach((food, index) => {
+                                const li = document.createElement('li');
+                                li.textContent = food.name;
+                                li.setAttribute('data-index', index);
+                                li.addEventListener('click', function() {
+                                    const selectedIndex = parseInt(this.getAttribute('data-index'));
+                                    const selectedFood = currentSuggestions[selectedIndex];
+                                    input.value = selectedFood.name;
+                                    input.setAttribute('data-selected-food-id', selectedFood.id);
+                                    suggestionsBox.innerHTML = '';
+                                    suggestionsBox.style.display = 'none';
+                                });
+                                suggestionsBox.appendChild(li);
                             });
-                            suggestionsBox.appendChild(li);
-                        });
-                    } else {
+                        } else {
+                            suggestionsBox.style.display = 'none';
+                        }
+                    } catch (error) {
+                        console.error('Error handling suggestions:', error);
                         suggestionsBox.style.display = 'none';
                     }
                 } else {
@@ -171,69 +250,123 @@
                 }
             });
 
-            input.addEventListener('blur', function () {
+            // Hide suggestions when clicking outside
+            input.addEventListener('blur', function() {
                 setTimeout(() => suggestionsBox.style.display = 'none', 200);
             });
         });
 
+        // Add event listeners for adding food items
         document.querySelectorAll('.add-button').forEach(button => {
-            button.addEventListener('click', function () {
+            button.addEventListener('click', function() {
                 const input = this.previousElementSibling;
-                const food = input.value.trim();
+                const foodName = input.value.trim();
+                const foodId = input.getAttribute('data-selected-food-id');
                 const foodList = this.parentNode.nextElementSibling.nextElementSibling;
 
-                if (food !== "") {
+                if (foodName !== "" && foodId) {
                     const li = document.createElement('li');
-                    li.textContent = food;
+                    li.textContent = foodName;
+                    li.setAttribute('data-food-id', foodId);
+                    
                     const removeBtn = document.createElement('button');
                     removeBtn.textContent = "✖";
                     removeBtn.style.marginLeft = "10px";
                     removeBtn.style.cursor = "pointer";
                     removeBtn.addEventListener('click', () => li.remove());
+                    
                     li.appendChild(removeBtn);
                     foodList.appendChild(li);
                     input.value = "";
+                    input.removeAttribute('data-selected-food-id');
+                } else if (foodName !== "") {
+                    alert("Please select a food item from the suggestions list");
                 }
             });
         });
 
-       async function getFoodSuggestion(query){
-            try{
-               await fetch("http://127.0.0.1:5000/search?name="+query).then((response)=>response.json()).then((response)=>{
-                    // alert(JSON.stringify(response))
-                   
-                    return response
-                });
-               
-
-            }catch(e){
-
-            }
-        }
-
-        // Jaro-Winkler similarity function
-        function jaroWinkler(s1, s2) {
-            let jaro = 0;
-            let prefix = 0;
-            let matchWindow = Math.floor(Math.max(s1.length, s2.length) / 2) - 1;
-            let matches1 = new Array(s1.length).fill(false);
-            let matches2 = new Array(s2.length).fill(false);
-            let matchCount = 0;
-
-            for (let i = 0; i < s1.length; i++) {
-                let start = Math.max(0, i - matchWindow);
-                let end = Math.min(s2.length, i + matchWindow + 1);
-                for (let j = start; j < end; j++) {
-                    if (matches2[j] === false && s1[i] === s2[j]) {
-                        matches1[i] = matches2[j] = true;
-                        matchCount++;
-                        break;
-                    }
+        // Allow adding food by pressing Enter
+        document.querySelectorAll('.search-box').forEach(input => {
+            input.addEventListener('keypress', function(e) {
+                if (e.key === 'Enter') {
+                    const addButton = this.nextElementSibling;
+                    addButton.click();
                 }
-            }
+            });
+        });
 
-            return matchCount / Math.max(s1.length, s2.length);
-        }
+        // Submit button event listener
+        document.getElementById('submit-plan').addEventListener('click', function() {
+            const planId = parseInt(document.getElementById('plan-id').value) || 90718;
+            const foodsData = {};
+            
+            // Initialize with empty arrays for all days and meal times
+            days.forEach(day => {
+                foodsData[day] = {};
+                Object.values(mealTimes).forEach(mealTime => {
+                    foodsData[day][mealTime] = [];
+                });
+            });
+            
+            // Collect data from the interface (only if items exist)
+            document.querySelectorAll('.day').forEach(dayElement => {
+                const day = dayElement.getAttribute('data-day');
+                
+                dayElement.querySelectorAll('.meal').forEach(mealElement => {
+                    const mealTime = mealElement.getAttribute('data-meal');
+                    const foodItems = Array.from(mealElement.querySelector('.food-list').children).map(item => 
+                        item.getAttribute('data-food-id')
+                    );
+                    
+                    // Only update if there are actual food items
+                    if (foodItems.length > 0) {
+                        foodsData[day][mealTime] = foodItems;
+                    }
+                });
+            });
+            
+            // Convert foods data to string for SQLite storage
+            const foodsString = JSON.stringify(foodsData);
+            
+            // Create the final data structure
+            const finalData = {
+                id: planId,
+                foods: foodsString  // Store as string for SQLite
+            };
+            
+            // Display the JSON in the response container
+            const responseContainer = document.getElementById('response-display');
+            responseContainer.textContent = JSON.stringify(finalData, null, 2);
+            responseContainer.style.display = 'block';
+            
+            // Send data to server
+            submitMealPlan(finalData);
+        });
+
+        // Function to submit meal plan data to the server
+        async function submitMealPlan(mealPlanData) {
+            try {
+                const response = await fetch('http://127.0.0.1:5000/user/foodUpdate', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify(mealPlanData)
+                });
+                
+                if (!response.ok) {
+                    throw new Error('Failed to submit meal plan');
+                }
+                
+                const result = await response.json();
+                console.log('Submission successful:', result);
+                alert('Meal plan submitted successfully!');
+                //
+            } catch (error) {
+                console.error('Error submitting meal plan:', error);
+                alert('Failed to submit meal plan. Please try again later.');
+            }
+        }//
     </script>
 </body>
 </html>

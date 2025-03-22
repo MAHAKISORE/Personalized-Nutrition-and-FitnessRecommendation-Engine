@@ -60,6 +60,7 @@ class FoodRepository(FoodRepositoryInterface,DataBase):
 
 
     def updateFoodField(self,json_data):
+        
         model = FoodModel.jsonToUpdate(json_data = json_data,query_value=json_data.get("id"))
         task = f"UPDATE Users SET {model.columns} WHERE id=?"
         self._cursor.execute(task,model.values)
