@@ -1,8 +1,10 @@
 from ..data_layer.repository.caching_repository import CachingRepository
 from ..data_layer.repository.food_repository import FoodRepository
 from ..data_layer.Models.food_model import FoodModel
+from ..data_layer.repository.irepositories.ifood_repository import FoodRepositoryInterface
 
-class FoodProxy:
+
+class FoodProxy(FoodRepositoryInterface):
     def __init__(self):
         self.cache_repository = CachingRepository()
         self.food_repository = FoodRepository()
@@ -19,3 +21,5 @@ class FoodProxy:
             cached_data = self.cache_repository.setJsonData("food",datas)
         searched_data = self.food_repository.searchFood(db_data=cached_data,query=query)
         return searched_data
+    
+    

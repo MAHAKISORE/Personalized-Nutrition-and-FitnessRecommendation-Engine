@@ -17,7 +17,7 @@ class FoodModel(ModelInterface):
     @classmethod
     def fromJson(food,json_data):
         return food(
-            id=json_data["food_code"],
+            id=json_data.get("food_code"),
             name=json_data["food_name"],
             energy = json_data["energy_kj"],
             calorie = json_data["energy_kcal"],

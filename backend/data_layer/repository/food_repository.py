@@ -3,21 +3,22 @@ from .jaro import JaroWrinklerSearching
 from ..Models.food_model import FoodModel
 from abc import ABC,abstractmethod
 from ..Models.food_model import FoodModel
+from .irepositories.ifood_repository import FoodRepositoryInterface
 
 
-class FoodRepositoryInterface(ABC):
-    @abstractmethod
-    def getData(self):
-        pass
-    @abstractmethod
-    def searchFood(self,query):
-        pass
+# class FoodRepositoryInterface(ABC):
+#     @abstractmethod
+#     def getData(self):
+#         pass
+#     @abstractmethod
+#     def searchFood(self,query):
+#         pass
 
-    @abstractmethod
-    def updateFoodField(self,json_data):
-        pass
+#     @abstractmethod
+#     def updateFoodField(self,json_data):
+#         pass
 
-class FoodRepository(FoodRepositoryInterface,DatabaseRepository):
+class FoodRepository(FoodRepositoryInterface,DatabaseRepository,):
     """Creates a singleton instance of the FoodRepository class.
         This ensures that only one instance of the class is created
         and shared across the application.
