@@ -6,14 +6,17 @@ from flask_cors import CORS
 from .view.config import AppConfig
 from.controller.food_controller import FoodController
 
+#Creating Flask instance
 app = Flask(__name__)
+
+#Cross Origin Resource Sharing
 CORS(app)
 
-
+#Configuring the app routes
 @app.route(AppConfig.start_url)
 def hello_world():
     return {"name":"hello there!"}
-
+    
 
 @app.route(AppConfig.signIn_url,methods=['GET','POST'])
 def page():
@@ -41,7 +44,8 @@ def login():
 @app.route(AppConfig.search_url,methods=['GET'])
 def search():
     name = request.args.get('name')
-    sorted_list = FoodRepository().search_data(name)
+    # sorted_list = FoodRepository().searchFood(name)
+    sorted_list = FoodController().searchFood(query=name)
     return sorted_list
 
 @app.route(AppConfig.health_update_url,methods=['POST'])
@@ -58,5 +62,5 @@ def food_update():
 
     return res
     
-    
+#running the app
 app.run(debug=True)

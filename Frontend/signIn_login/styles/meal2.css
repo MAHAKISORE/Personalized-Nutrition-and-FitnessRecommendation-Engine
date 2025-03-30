@@ -1,0 +1,121 @@
+body {
+    font-family: Arial, sans-serif;
+    background-color: #f5fdf5;
+    color: #1a3e1a;
+    padding: 20px;
+}
+.container {
+    max-width: 800px;
+    margin: auto;
+    background: white;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+}
+h1 {
+    text-align: center;
+    color: #2a7a2a;
+}
+.day {
+    background: #e6f5e6;
+    padding: 15px;
+    margin-bottom: 15px;
+    border-radius: 10px;
+}
+.meal {
+    background: white;
+    padding: 10px;
+    margin-top: 10px;
+    border-radius: 5px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+}
+.input-container {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+.search-box {
+    flex-grow: 1;
+    padding: 8px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+}
+.add-button {
+    background-color: #2a7a2a;
+    color: white;
+    border: none;
+    padding: 8px 12px;
+    border-radius: 5px;
+    cursor: pointer;
+}
+.food-list {
+    list-style: none;
+    padding: 0;
+}
+.food-list li {
+    background: #d4eecf;
+    padding: 5px;
+    margin: 3px 0;
+    border-radius: 5px;
+    display: flex;
+    justify-content: space-between;
+}
+.suggestions {
+    position: absolute;
+    background: white;
+    border: 1px solid #ccc;
+    list-style: none;
+    padding: 0;
+    max-height: 150px;
+    overflow-y: auto;
+    width: 200px;
+    display: none;
+    z-index: 100;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+.suggestions li {
+    padding: 8px;
+    cursor: pointer;
+}
+.suggestions li:hover {
+    background: #d4eecf;
+}
+.submit-container {
+    margin-top: 20px;
+    text-align: center;
+}
+.submit-button {
+    background-color: #2a7a2a;
+    color: white;
+    border: none;
+    padding: 12px 24px;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 16px;
+    font-weight: bold;
+}
+.submit-button:hover {
+    background-color: #1c5e1c;
+}
+.response-container {
+    margin-top: 20px;
+    padding: 10px;
+    background-color: #f0f0f0;
+    border-radius: 5px;
+    display: none;
+    white-space: pre-wrap;
+    overflow-x: auto;
+    font-family: monospace;
+}
+.plan-id-container {
+    margin-bottom: 20px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+#plan-id {
+    padding: 8px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    width: 100px;
+}

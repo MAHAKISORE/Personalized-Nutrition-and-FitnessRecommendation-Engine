@@ -15,7 +15,6 @@ class HealthController(HealthControllerInterface):
         self.heath_repository = HealthRepository()
 
     def updateHealthModel(self,json_data):
-            # print(json_data["id"])
             if(self.heath_repository.getUser("id",json_data["id"])): 
                 self.heath_repository.updateHealthFields(json_data=json_data)
                 return {"msg":"Updated"},AppConfig.ok_code

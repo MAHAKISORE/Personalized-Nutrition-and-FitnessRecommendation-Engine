@@ -29,11 +29,11 @@ class FoodModel(ModelInterface):
     
     def toJson(self):
           return {
-                "id":self.id,
-                "name":self.name,
-                "energy":self.energy,
-                "calorie":self.calorie,
-                "protein":self.protien
+                "food_code":self.id,
+                "food_name":self.name,
+                "energy_kj":self.energy,
+                "energy_kcal":self.calorie,
+                "protein_g":self.protien
           }
 
     @classmethod
