@@ -1,10 +1,14 @@
 from flask import Flask,render_template,request,make_response
-from .controller.user_auth import UserAuth
-from .controller.health_controller import HealthController
-from .data_layer.repository.food_repository import FoodRepository
+from .domain.usecase.updateHealth_usecase import UpdateHealthUsecase
+from .data.data_sources.food_datasource import FoodDatasource
 from flask_cors import CORS
 from .view.config import AppConfig
-from.controller.food_controller import FoodController
+
+
+from .domain.usecase.signIn_usecase import SignInUsecase
+from .domain.usecase.login_usecase import LoginUsecase
+from .domain.usecase.updateFood_usecase import UpdateFoodUsecase
+from .domain.usecase.searchFood_usecase import SearchFoodUsecase
 
 #Creating Flask instance
 app = Flask(__name__)
@@ -20,22 +24,24 @@ def hello_world():
 
 @app.route(AppConfig.signIn_url,methods=['GET','POST'])
 def page():
-    auth = UserAuth()
+    signIn_usecase = SignInUsecase()
+    # auth = UserAuth()
     if(request.method == "GET"):
         return render_template("register.html")
     if(request.method == "POST"):
         body = request.get_json()   
-        res = auth.signIn(body)
+        res = signIn_usecase.signIn(body)
         response = make_response(res)
         return response
     
 
 @app.route(AppConfig.login_url,methods=['GET','POST'])
 def login():
-    auth = UserAuth()
+    login_usecase = LoginUsecase()
+    # auth = UserAuth()
     if(request.method== "POST"):
         body = request.get_json()
-        res =auth.login(body)
+        res =login_usecase.login(body)
         return res
     if(request.method == "GET"):
         return "hello world"
@@ -44,22 +50,24 @@ def login():
 @app.route(AppConfig.search_url,methods=['GET'])
 def search():
     name = request.args.get('name')
+    search_usecase = SearchFoodUsecase()
     # sorted_list = FoodRepository().searchFood(name)
-    sorted_list = FoodController().searchFood(query=name)
+    sorted_list = search_usecase.searchFood(query=name)
     return sorted_list
 
 @app.route(AppConfig.health_update_url,methods=['POST'])
 def health_update():
     body = request.get_json()
-    res = HealthController().updateHealthModel(body)
+    updateHealth_usecase = UpdateHealthUsecase()
+    res = updateHealth_usecase.updateHealthModel(json_data=body)
     return res
 
 @app.route(AppConfig.food_update_url,methods = ["POST"])
 def food_update():
     body = request.get_json()
-    food_controller = FoodController()
-    res = food_controller.updateFood(json_data=body)
-
+    updateFood_usecase = UpdateFoodUsecase()
+    # food_controller = FoodController()
+    res = updateFood_usecase.updateFood(json_data=body)
     return res
     
 #running the app
