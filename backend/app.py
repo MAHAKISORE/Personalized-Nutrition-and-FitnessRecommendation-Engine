@@ -5,6 +5,7 @@ from .data_layer.repository.food_repository import FoodRepository
 from flask_cors import CORS
 from .view.config import AppConfig
 from.controller.food_controller import FoodController
+import json
 
 #Creating Flask instance
 app = Flask(__name__)
@@ -61,6 +62,13 @@ def food_update():
     res = food_controller.updateFood(json_data=body)
 
     return res
+@app.route(AppConfig.high_protein_diet,methods = ["POST"])
+def get_high_protein_diet():
+    body = request.get_json()
+    calorie = request.args.get("calorie")
+    print(calorie)
+    food_controller = FoodController()
+    return food_controller.high_protein_diet(json_data=body,calorie=float(calorie))
     
 #running the app
 app.run(debug=True)

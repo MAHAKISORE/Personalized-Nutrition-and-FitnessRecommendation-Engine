@@ -8,6 +8,7 @@ class AppConfig:
     search_url = "/search"
     health_update_url = "/user/healthUpdate"
     food_update_url = "/user/foodUpdate" 
+    high_protein_diet = "/user/diet"
     
     #status codes
     created_code = 201

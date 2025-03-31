@@ -41,7 +41,7 @@ class FoodRepository(FoodRepositoryInterface,DatabaseRepository,):
         datas = []
         task = "SELECT * FROM Foods"
         self._cursor.execute(task)
-        data:list = self._cursor.fetchall()
+        data = self._cursor.fetchall()
         for i in data:
             model:FoodModel = FoodModel.fromJson(i)
             model.name = str(model.name[0])     
@@ -73,4 +73,28 @@ class FoodRepository(FoodRepositoryInterface,DatabaseRepository,):
         task = f"UPDATE Users SET {model.columns} WHERE id=?"
         self._cursor.execute(task,model.values) #execute query
         self._conn.commit() #update the database
+    
+    def knapsack_food(self,json_data,calorie):
+        foods = FoodModel.listMaptoFood(json_data)
+
+        for k in  foods:
+            print(f"{k.calorie},{k.protien}")
+        foods.sort(key=lambda x:(x.protien/x.calorie),reverse=True)
+        finalCalorie = 0.0
+        addedFoods = []
         
+        for food in foods:
+            if(food.calorie <= calorie):
+                finalCalorie += food.calorie
+                calorie -= food.calorie
+                addedFoods.append(food)
+            else:
+                food_model = food
+                finalCalorie += calorie
+                food_model.calorie = calorie
+                food_model.protien = food.protien*calorie/food.calorie
+                
+                addedFoods.append(food_model)
+                break
+        print(calorie)
+        return FoodModel.foodListToJson(addedFoods)

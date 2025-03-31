@@ -4,20 +4,20 @@ class FoodModel(ModelInterface):
     def __init__(self,id:str = None,name:str = None,energy:float= None,calorie:float=None,protien:float = None):
         #instance variables
         self.id:int = id
-        self.name:str = name,
+        self.name:str = name
         self.energy:float = energy
-        self.calorie:float = calorie,
-        self.protien:float = protien,
+        self.calorie:float = calorie
+        self.protien:float = protien
         self.similarity:int = None
 
-    # def __str__(self):
-    #       return f"id:{self.id},name:{self.name}"
+    def __str__(self):
+          return f"id:{self.id},name:{self.calorie}"
  
 
     @classmethod
     def fromJson(food,json_data):
         return food(
-            id=json_data.get("food_code"),
+            id=json_data["food_code"],
             name=json_data["food_name"],
             energy = json_data["energy_kj"],
             calorie = json_data["energy_kcal"],
@@ -40,6 +40,21 @@ class FoodModel(ModelInterface):
     def stringToList(food,text:str):
             converted_data = [[int(y) for y in x.split(",")] for x in text.split(";")]
             return converted_data
+    
+    @classmethod
+    def listMaptoFood(cls,arr)->list:
+        model_arr = []
+        for k in arr:
+            print(cls.fromJson(k))
+            model_arr.append(cls.fromJson(k))
+        return model_arr
+
+    @classmethod
+    def foodListToJson(cls,arr)->list:
+        json_arr = []
+        for k in arr:
+             json_arr.append(cls.toJson(k))
+        return json_arr
     
     # def toDatabase(self, json_data):
     #     data = self.fromJson(json_data)

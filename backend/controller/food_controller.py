@@ -27,3 +27,9 @@ class FoodController(FoodControllerInterface):
         filtered_data = self.food_proxy.searchFood(query=query)
         return filtered_data
 
+
+    def high_protein_diet(self,json_data,calorie):
+        if(calorie == 0 or calorie == None):
+            return {"msg":"Invalid calorie"},AppConfig.bad_request_code
+        high_protein_foods = self.food_repo.knapsack_food(json_data,calorie=calorie)
+        return {"msg":high_protein_foods},AppConfig.ok_code
