@@ -1,11 +1,11 @@
 from...view.config import AppConfig
-from ...data.repositories.user_repository import UserRepository
+from backend.domain.repositories.user_repository import UserRepositoryInterface
 
 
 
 class UpdateFoodUsecase():
-    def __init__(self):
-        self.user_repo = UserRepository()
+    def __init__(self,user_repo:UserRepositoryInterface):
+        self.user_repo = user_repo
 
     def updateFood(self,json_data):
         if(json_data.get("id") == None):

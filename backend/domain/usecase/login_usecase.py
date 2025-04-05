@@ -1,14 +1,14 @@
 from ...data.repositories.user_repository import UserRepository
 from ...data.Models.user_model import UserModel
 from ...view.config import AppConfig
-
+from backend.domain.repositories.user_repository import UserRepositoryInterface
 
 
 
 class LoginUsecase():
     
-    def __init__(self):
-        self.__data = UserRepository()
+    def __init__(self,upi:UserRepositoryInterface):
+        self.__data =upi
        
         
     def login(self,json_data):

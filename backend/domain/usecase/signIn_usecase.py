@@ -1,12 +1,13 @@
 from ...data.repositories.user_repository import UserRepository
+from backend.domain.repositories.user_repository import UserRepositoryInterface
 from ...data.Models.user_model import UserModel
 from ...view.config import AppConfig
 
 
 class SignInUsecase():
     
-    def __init__(self):
-        self.__data = UserRepository()
+    def __init__(self,user_repo:UserRepositoryInterface):
+        self.__data = user_repo
 
     def signIn(self,json_data):
             model = UserModel().fromJson(json_data=json_data)

@@ -12,19 +12,20 @@ class HealthDatasource(DatabaseSource):
         and shared across the application.
         The __new__ method is overridden to control the instantiation
         process. If an instance already exists, it returns that instance."""
-    _cursor = None
-    def __new__(cls):
+    # _cursor = None
+    # def __new__(cls):
     
-        if not hasattr(cls,'health_instance'):
-            cls.health_instance =  super(HealthDatasource,cls).__new__(cls)
-        if cls._cursor == None:
-             cls._cursor = cls._conn.cursor()        
-        return cls.health_instance
+    #     if not hasattr(cls,'health_instance'):
+    #         cls.health_instance =  super(HealthDatasource,cls).__new__(cls)
+    #     if cls._cursor == None:
+    #          cls._cursor = cls._conn.cursor()        
+    #     return cls.health_instance
     
     #Constructor of the HealthRepository class
     #It initializes the cursor and connection to the database
     def __init__(self):
         super().__init__()
+        self._cursor = self._conn.cursor()
     
     #calculates the BMI of the user
     #BMI = weight(kg)/height(m)^2

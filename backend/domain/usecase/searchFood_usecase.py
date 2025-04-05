@@ -1,12 +1,10 @@
 from...view.config import AppConfig
-from abc import ABC,abstractmethod
-from ...data.repositories.food_repository import FoodRepository
-
+from backend.domain.repositories.food_repository import FoodRepositoryInterface
 
 
 class SearchFoodUsecase():
-    def __init__(self):
-        self.user_repo = FoodRepository()
+    def __init__(self,upi:FoodRepositoryInterface):
+        self.user_repo = upi
 
     def searchFood(self,query):
         if(query == None or query == ""):

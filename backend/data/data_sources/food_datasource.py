@@ -24,10 +24,10 @@ class FoodDatasource(DatabaseSource):
         The __new__ method is overridden to control the instantiation
         process. If an instance already exists, it returns that instance."""
 
-    def __new__(cls):
-        if not hasattr(cls,"food_instance"):
-            cls.food_instance = super(FoodDatasource,cls).__new__(cls)
-        return cls.food_instance
+    # def __new__(cls):
+    #     if not hasattr(cls,"food_instance"):
+    #         cls.food_instance = super(FoodDatasource,cls).__new__(cls)
+    #     return cls.food_instance
     
     #Constructor of the FoodRepository class
     #It initializes the cursor and connection to the database

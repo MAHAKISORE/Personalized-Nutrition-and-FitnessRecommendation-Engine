@@ -7,14 +7,18 @@ class DatabaseSource(object):
         and shared across the application.
         The __new__ method is overridden to control the instantiation
         process. If an instance already exists, it returns that instance."""
-    def __new__(cls):
-            if not hasattr(cls,'instance'):
-                if(cls._conn is None):
-                    cls._conn = sqlite3.connect("database.db",check_same_thread=False)
-                    cls._conn.row_factory = sqlite3.Row
-                cls.instance = super(DatabaseSource,cls).__new__(cls)
-            return cls.instance
- 
+    # def __new__(cls):
+    #         if not hasattr(cls,'instance'):
+    #             if(cls._conn is None):
+    #                 cls._conn = sqlite3.connect("database.db",check_same_thread=False)
+    #                 cls._conn.row_factory = sqlite3.Row
+    #             cls.instance = super(DatabaseSource,cls).__new__(cls)
+    #         return cls.instance
+    
+    def __init__(self):
+        self._conn = sqlite3.connect("database.db",check_same_thread=False)
+        self._conn.row_factory = sqlite3.Row
+
  
 
     @staticmethod

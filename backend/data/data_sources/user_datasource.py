@@ -7,23 +7,25 @@ from abc import ABC,abstractmethod
 
 #User class handles the CRUD operations in database 
 class UserDatasource(DatabaseSource):
-    _cursor = None
-    
+   
     """Creates a singleton instance of the UserRepository class.
         This ensures that only one instance of the class is created
         and shared across the application.
         The __new__ method is overridden to control the instantiation
         process. If an instance already exists, it returns that instance."""
 
-    def __new__(cls):
-        super(DatabaseSource).__init__()
-        if not hasattr(cls,'user_instance'):
-            if(cls._cursor is None):
-                if(cls._conn is None):
-                    cls.connect()                    
-                cls._cursor = cls._conn.cursor()
-            cls.user_instance = super(UserDatasource,cls).__new__(cls)
-        return cls.user_instance 
+    # def __new__(cls):
+    #     super(DatabaseSource).__init__()
+    #     if not hasattr(cls,'user_instance'):
+    #         if(cls._cursor is None):
+    #             if(cls._conn is None):
+    #                 cls.connect()                    
+    #             cls._cursor = cls._conn.cursor()
+    #         cls.user_instance = super(UserDatasource,cls).__new__(cls)
+    #     return cls.user_instance 
+    def __init__(self):
+        super().__init__()
+        self._cursor = self._conn.cursor()
 
 
     #inserting the user data into the database
