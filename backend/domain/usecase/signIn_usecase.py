@@ -1,6 +1,6 @@
 from ...data.repositories.user_repository import UserRepository
 from backend.domain.repositories.user_repository import UserRepositoryInterface
-from ...data.Models.user_model import UserModel
+from ...data.Mappers.user_model import UserModel
 from ...view.config import AppConfig
 
 

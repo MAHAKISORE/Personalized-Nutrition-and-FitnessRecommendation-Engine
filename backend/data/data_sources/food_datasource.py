@@ -1,8 +1,8 @@
 from .database_source import DatabaseSource
 from .jaro import JaroWrinklerSearching
-from ..Models.food_model import FoodModel
+from ..Mappers.food_mapper import FoodMapper
 from abc import ABC,abstractmethod
-from ..Models.food_model import FoodModel
+from ..Mappers.food_mapper import FoodMapper
 
 
 # class FoodRepositoryInterface(ABC):
@@ -42,7 +42,7 @@ class FoodDatasource(DatabaseSource):
         self._cursor.execute(task)
         data = self._cursor.fetchall()
         for i in data:
-            model:FoodModel = FoodModel.fromJson(i)
+            model:FoodMapper = FoodMapper.fromJson(i)
             model.name = str(model.name[0])     
             datas.append(model)
 
@@ -56,7 +56,7 @@ class FoodDatasource(DatabaseSource):
         # print(db_data)
         for i in db_data:
             # print(i)
-            datas.append(FoodModel.fromJson(i))
+            datas.append(FoodMapper.fromJson(i))
         jaro_search = JaroWrinklerSearching(datas)
         sorted_list = jaro_search.hybrid_search(query=query)
         arr = []
@@ -68,7 +68,7 @@ class FoodDatasource(DatabaseSource):
     #updates the food data in the user table 
 
     def updateFoodField(self,json_data):
-        model = FoodModel.jsonToUpdate(json_data = json_data,query_value=json_data.get("id"))   #json to updating format
+        model = FoodMapper.jsonToUpdate(json_data = json_data,query_value=json_data.get("id"))   #json to updating format
         task = f"UPDATE Users SET {model.columns} WHERE id=?"
         self._cursor.execute(task,model.values) #execute query
         self._conn.commit() #update the database

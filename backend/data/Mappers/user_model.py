@@ -1,8 +1,8 @@
 import random
-from .model import ModelInterface
+from .mapper import MapperInterface
 from ...domain.entities.user_entitie import UserEntitie
 
-class UserModel(ModelInterface,UserEntitie):
+class UserModel(MapperInterface,UserEntitie):
     def __init__(self,id:int = None,name:str = None,email:str = None):
         super().__init__(
             id=id,

@@ -1,5 +1,5 @@
 from .database_source import DatabaseSource
-from ..Models.user_model import UserModel
+from ..Mappers.user_model import UserModel
 from abc import ABC,abstractmethod
 
 

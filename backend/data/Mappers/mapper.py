@@ -9,7 +9,7 @@ class TupleConversion:
 
 
 #Standard Blueprint for all models
-class ModelInterface(ABC):
+class MapperInterface(ABC):
 
     @classmethod #method that returns the class itself
     @abstractmethod

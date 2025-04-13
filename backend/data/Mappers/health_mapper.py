@@ -1,8 +1,8 @@
 from ...domain.entities.user_entitie import UserEntitie
-from .model import ModelInterface
+from .mapper import MapperInterface
 
 
-class HealthModel(UserEntitie,ModelInterface):
+class HealthMapper(UserEntitie,MapperInterface):
     def __init__(self,height:float=None,age:int = None,weight:float = None,bmi:float = None,allergy:int = None,diabetes:int=None,hyper_tension:int=None,gender:str = None):
         super().__init__(
             height=height,

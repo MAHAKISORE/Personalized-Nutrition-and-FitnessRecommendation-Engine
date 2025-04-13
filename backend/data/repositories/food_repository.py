@@ -1,6 +1,6 @@
 from ..data_sources.redis_datasource import RedisDatasource
 from ..data_sources.food_datasource import FoodDatasource
-from ..Models.food_model import FoodModel
+from ..Mappers.food_mapper import FoodMapper
 from ...domain.repositories.food_repository import FoodRepositoryInterface
 
 class FoodRepository(FoodRepositoryInterface):
@@ -16,7 +16,7 @@ class FoodRepository(FoodRepositoryInterface):
             db_data = self.food_repository.getData()
             datas = []
             for i in db_data:
-                datas.append(FoodModel.toJson(i))
+                datas.append(FoodMapper.toJson(i))
             cached_data = self.cache_repository.setJsonData("food",datas)
         searched_data = self.food_repository.searchFood(db_data=cached_data,query=query)
         return searched_data

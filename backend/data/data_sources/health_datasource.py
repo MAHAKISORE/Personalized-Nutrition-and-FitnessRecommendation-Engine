@@ -1,4 +1,4 @@
-from ..Models.health_model import HealthModel
+from ..Mappers.health_mapper import HealthMapper
 from abc import ABC,abstractmethod
 from .user_datasource import UserDatasource
 from .database_source import DatabaseSource
@@ -33,7 +33,7 @@ class HealthDatasource(DatabaseSource):
         return weight/(height*height)
     
     def updateHealthFields(self,json_data):
-            updates = HealthModel.jsonToUpdate(json_data=json_data,query_value=json_data["id"]) #json to updating format
+            updates = HealthMapper.jsonToUpdate(json_data=json_data,query_value=json_data["id"]) #json to updating format
             print(f"UPDATE Users SET {updates.columns} WHERE id=?",updates.values)  #update query
             self._cursor.execute(f"UPDATE Users SET {updates.columns} WHERE id=?",updates.values)   #exceute query
             self._conn.commit() #update the database
