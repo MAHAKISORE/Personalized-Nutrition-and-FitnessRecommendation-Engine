@@ -5,6 +5,38 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Login - Nutrify</title>
     <link rel="stylesheet" href="styles/login.css">
+
+    <script>
+        const url = "http://127.0.0.1:5000/login";
+        window.onload = function() {
+            var id = localStorage.getItem("id");
+            if (id) {
+                window.location.href = "/home/sharvesh/Desktop/Personalized-Nutrition-and-FitnessRecommendation-Engine/Frontend/home.html";
+            }
+        }
+        async function login() {
+            const email = document.getElementById("email").value;
+            const password = document.getElementById("password").value;
+
+            await fetch(url, {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify({
+                    email: email,
+                    pwd: password
+                })
+            }).then((response) => response.json())
+            .then((response) => {
+                var data = JSON.stringify(response);
+
+                console.log(data)
+                localStorage.setItem("id", response["id"]);
+                window.location.href = "/home/sharvesh/Desktop/Personalized-Nutrition-and-FitnessRecommendation-Engine/Frontend/home.html";
+            });
+        }
+    </script>
 </head>
 <body>
 
@@ -26,8 +58,8 @@
 
         <form>
             <div class="form-group">
-                <label for="username">Username</label>
-                <input type="text" id="username" placeholder="Enter your username">
+                <label for="email">Email</label>
+                <input type="text" id="email" placeholder="Enter your email">
             </div>
 
             <div class="form-group">
@@ -37,7 +69,7 @@
 
             <p class="forgot-password"><a href="#">Forgot password?</a></p>
 
-            <button type="submit" class="login-btn">Login</button>
+            <button onclick="login()" class="login-btn">Login</button>
         </form>
 
         <p class="register-link">Don't have an account? <a href="register.html">Register here</a></p>

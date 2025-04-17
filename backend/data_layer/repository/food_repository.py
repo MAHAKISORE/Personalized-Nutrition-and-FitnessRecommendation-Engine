@@ -42,9 +42,10 @@ class FoodRepository(FoodRepositoryInterface,DatabaseRepository,):
         task = "SELECT * FROM Foods"
         self._cursor.execute(task)
         data = self._cursor.fetchall()
+        print(data)
         for i in data:
             model:FoodModel = FoodModel.fromJson(i)
-            model.name = str(model.name[0])     
+            model.name = str(model.name)     
             datas.append(model)
 
         return datas

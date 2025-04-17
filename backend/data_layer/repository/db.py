@@ -19,7 +19,8 @@ class DatabaseRepository(object):
 
     @staticmethod
     def connect():
-        DatabaseRepository._conn = sqlite3.connect("database.db")
+        if(DatabaseRepository._conn is None):
+            DatabaseRepository._conn = sqlite3.connect("database.db")
         
     #creates the connection to the database
     def createTables(self):

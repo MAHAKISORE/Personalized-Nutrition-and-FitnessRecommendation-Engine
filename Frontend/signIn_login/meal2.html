@@ -98,7 +98,7 @@
                 if (query.length > 0) {
                     try {
                         currentSuggestions = await getFoodSuggestions(query);
-                        
+                        console.log(current)
                         if (currentSuggestions && currentSuggestions.length > 0) {
                             suggestionsBox.style.display = 'block';
                             

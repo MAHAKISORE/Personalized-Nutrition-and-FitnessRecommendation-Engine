@@ -11,15 +11,19 @@ class FoodProxy(FoodRepositoryInterface):
     
     def searchFood(self,query):
         cached_data = self.cache_repository.getJsonCacheData("food")
-        if(cached_data != None):
-            print("Used cached data")
+
         if(cached_data == None):
             db_data = self.food_repository.getData()
             datas = []
             for i in db_data:
                 datas.append(FoodModel.toJson(i))
-            cached_data = self.cache_repository.setJsonData("food",datas)
+            self.cache_repository.setJsonData("food",datas)
+            print(datas)
+            print("User cached")
+            return datas
+        
         searched_data = self.food_repository.searchFood(db_data=cached_data,query=query)
+        print(searched_data)
         return searched_data
     
     
