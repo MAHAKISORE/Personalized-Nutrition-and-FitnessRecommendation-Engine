@@ -1,9 +1,10 @@
 from .model import ModelInterface
 
 class FoodModel(ModelInterface):
-    def __init__(self,id:str = None,name:str = None,energy:float= None,calorie:float=None,protien:float = None):
+    def __init__(self,food_code:str=None,id:str = None,name:str = None,energy:float= None,calorie:float=None,protien:float = None):
         #instance variables
-        self.id:int = id
+        self.id = id
+        self.food_code:str = food_code
         self.name:str = name
         self.energy:float = energy
         self.calorie:float = calorie
@@ -17,7 +18,8 @@ class FoodModel(ModelInterface):
     @classmethod
     def fromJson(food,json_data):
         return food(
-            id=json_data["food_code"],
+            id = json_data["id"],
+            food_code=json_data["food_code"],
             name=json_data["food_name"],
             energy = json_data["energy_kj"],
             calorie = json_data["energy_kcal"],
@@ -29,7 +31,8 @@ class FoodModel(ModelInterface):
     
     def toJson(self):
           return {
-                "food_code":self.id,
+                "id":self.id,
+                "food_code":self.food_code,
                 "food_name":self.name,
                 "energy_kj":self.energy,
                 "energy_kcal":self.calorie,
@@ -38,7 +41,7 @@ class FoodModel(ModelInterface):
 
     @classmethod
     def stringToList(food,text:str):
-            converted_data = [[int(y) for y in x.split(",")] for x in text.split(";")]
+            converted_data = [[[int(y) for y in x.split(",")] for x in k.split(";")] for k in text.split("/")]
             return converted_data
     
     @classmethod
@@ -55,6 +58,7 @@ class FoodModel(ModelInterface):
         for k in arr:
              json_arr.append(cls.toJson(k))
         return json_arr
+    
     
     # def toDatabase(self, json_data):
     #     data = self.fromJson(json_data)

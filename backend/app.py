@@ -70,5 +70,9 @@ def get_high_protein_diet():
     food_controller = FoodController()
     return food_controller.high_protein_diet(json_data=body,calorie=float(calorie))
     
+@app.route("/user/diet/<id>",methods = ["POST"])
+def get_diet(id):
+    food_controller = FoodController()
+    return food_controller.get_diet(id=id)
 #running the app
 app.run(debug=True)

@@ -33,3 +33,6 @@ class FoodController(FoodControllerInterface):
             return {"msg":"Invalid calorie"},AppConfig.bad_request_code
         high_protein_foods = self.food_repo.knapsack_food(json_data,calorie=calorie)
         return {"msg":high_protein_foods},AppConfig.ok_code
+    
+    def get_diet(self,id):
+        return self.food_repo.set_diet(id=id)

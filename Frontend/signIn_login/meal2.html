@@ -68,11 +68,14 @@
         // Function to get food suggestions from API
         async function getFoodSuggestions(query) {
             try {
-                const response = await fetch(`http://127.0.0.1:5000/search?name=${encodeURIComponent(query)}`);
+                const response = await fetch(`http://127.0.0.1:5000/search?name=${query}`);
+              
                 if (!response.ok) {
                     throw new Error('API response was not ok');
                 }
-                return await response.json();
+               const k = await response.json();
+               console.log(k)
+                return k;
             } catch (error) {
                 console.error('Error fetching suggestions:', error);
                 // Fallback to local filtering if API fails
@@ -98,18 +101,18 @@
                 if (query.length > 0) {
                     try {
                         currentSuggestions = await getFoodSuggestions(query);
-                        console.log(current)
+                        // console.log(current)
                         if (currentSuggestions && currentSuggestions.length > 0) {
                             suggestionsBox.style.display = 'block';
                             
                             currentSuggestions.forEach((food, index) => {
                                 const li = document.createElement('li');
-                                li.textContent = food.name;
+                                li.textContent = food.food_name;
                                 li.setAttribute('data-index', index);
                                 li.addEventListener('click', function() {
                                     const selectedIndex = parseInt(this.getAttribute('data-index'));
                                     const selectedFood = currentSuggestions[selectedIndex];
-                                    input.value = selectedFood.name;
+                                    input.value = selectedFood.food_name;
                                     input.setAttribute('data-selected-food-id', selectedFood.id);
                                     suggestionsBox.innerHTML = '';
                                     suggestionsBox.style.display = 'none';
@@ -120,7 +123,7 @@
                             suggestionsBox.style.display = 'none';
                         }
                     } catch (error) {
-                        console.error('Error handling suggestions:', error);
+                        // console.error('Error handling suggestions:', error);
                         suggestionsBox.style.display = 'none';
                     }
                 } else {

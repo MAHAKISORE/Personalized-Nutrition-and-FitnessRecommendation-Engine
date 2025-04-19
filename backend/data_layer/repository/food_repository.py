@@ -4,6 +4,7 @@ from ..Models.food_model import FoodModel
 from abc import ABC,abstractmethod
 from ..Models.food_model import FoodModel
 from .irepositories.ifood_repository import FoodRepositoryInterface
+import sqlite3
 
 
 # class FoodRepositoryInterface(ABC):
@@ -50,6 +51,11 @@ class FoodRepository(FoodRepositoryInterface,DatabaseRepository,):
 
         return datas
     
+    def getFoodById(self,id):
+        task = f"SELECT * FROM Foods WHERE id={id}"
+        self._cursor.execute(task)
+        data = self._cursor.fetchone()
+        return data
 
     #jarowinkler searching
     def searchFood(self,query,db_data):
@@ -58,6 +64,8 @@ class FoodRepository(FoodRepositoryInterface,DatabaseRepository,):
         # print(db_data)
         for i in db_data:
             # print(i)
+            print(i)
+
             datas.append(FoodModel.fromJson(i))
         jaro_search = JaroWrinklerSearching(datas)
         sorted_list = jaro_search.hybrid_search(query=query)
@@ -74,15 +82,21 @@ class FoodRepository(FoodRepositoryInterface,DatabaseRepository,):
         task = f"UPDATE Users SET {model.columns} WHERE id=?"
         self._cursor.execute(task,model.values) #execute query
         self._conn.commit() #update the database
+
+     
+    
+
     
     def knapsack_food(self,json_data,calorie):
         foods = FoodModel.listMaptoFood(json_data)
-
+        # json_data["id"]
+        # json_data[0]["name"]
         for k in  foods:
             print(f"{k.calorie},{k.protien}")
         foods.sort(key=lambda x:(x.protien/x.calorie),reverse=True)
         finalCalorie = 0.0
         addedFoods = []
+        # k = [FoodModel(id=123,calorie=1200),FoodModel()]
         
         for food in foods:
             if(food.calorie <= calorie):
@@ -99,3 +113,24 @@ class FoodRepository(FoodRepositoryInterface,DatabaseRepository,):
                 break
         print(calorie)
         return FoodModel.foodListToJson(addedFoods)
+    
+
+    def set_diet(self,id):
+        self._cursor.execute(f"SELECT foods FROM Users WHERE id={id}")
+        foods = dict(self._cursor.fetchone())
+        foods_string_list = foods["foods"]
+        h = FoodModel.stringToList(foods_string_list)
+        foo = []
+        for i in range(0,len(h)):
+            z = []
+            for j in range(0,len(h[i])):
+                s = []
+                for k in range(0,len(h[i][j])):
+                    h[i][j][k] = int(h[i][j][k])
+                    m = dict(self.getFoodById(h[i][j][k]))
+                    # print(m)
+                    s.append(m)
+                z.append(self.knapsack_food(s,calorie=100))
+            foo.append(z)        
+        return foo
+        # print(da)
