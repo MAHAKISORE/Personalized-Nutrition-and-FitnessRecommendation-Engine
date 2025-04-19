@@ -4,8 +4,7 @@ from ..Models.food_model import FoodModel
 from abc import ABC,abstractmethod
 from ..Models.food_model import FoodModel
 from .irepositories.ifood_repository import FoodRepositoryInterface
-import sqlite3
-
+import json
 
 # class FoodRepositoryInterface(ABC):
 #     @abstractmethod
@@ -119,18 +118,22 @@ class FoodRepository(FoodRepositoryInterface,DatabaseRepository,):
         self._cursor.execute(f"SELECT foods FROM Users WHERE id={id}")
         foods = dict(self._cursor.fetchone())
         foods_string_list = foods["foods"]
-        h = FoodModel.stringToList(foods_string_list)
-        foo = []
-        for i in range(0,len(h)):
-            z = []
-            for j in range(0,len(h[i])):
-                s = []
-                for k in range(0,len(h[i][j])):
-                    h[i][j][k] = int(h[i][j][k])
-                    m = dict(self.getFoodById(h[i][j][k]))
-                    # print(m)
-                    s.append(m)
-                z.append(self.knapsack_food(s,calorie=100))
-            foo.append(z)        
-        return foo
-        # print(da)
+        day = {
+            "Monday":{"Breakfast":[],"Lunch":[],"Dinner":[]},
+            "Tuesday":{"Breakfast":[],"Lunch":[],"Dinner":[]},    
+            "Wednesday":{"Breakfast":[],"Lunch":[],"Dinner":[]},
+            "Thursday":{"Breakfast":[],"Lunch":[],"Dinner":[]},
+            "Friday":{"Breakfast":[],"Lunch":[],"Dinner":[]},
+            "Saturday":{"Breakfast":[],"Lunch":[],"Dinner":[]},
+            "Sunday":{"Breakfast":[],"Lunch":[],"Dinner":[]}
+        }
+        json_data2 = json.loads(foods_string_list)
+        for i in json_data2.keys():
+            for j in json_data2[i].keys():
+                foods = []
+                for k in json_data2[i][j]:
+                    foods.append(self.getFoodById(k))
+                day[i][j] = self.knapsack_food(json_data=foods,calorie=100)
+        return day
+                
+  
