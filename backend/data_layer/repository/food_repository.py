@@ -6,17 +6,6 @@ from ..Models.food_model import FoodModel
 from .irepositories.ifood_repository import FoodRepositoryInterface
 import json
 
-# class FoodRepositoryInterface(ABC):
-#     @abstractmethod
-#     def getData(self):
-#         pass
-#     @abstractmethod
-#     def searchFood(self,query):
-#         pass
-
-#     @abstractmethod
-#     def updateFoodField(self,json_data):
-#         pass
 
 class FoodRepository(FoodRepositoryInterface,DatabaseRepository,):
     """Creates a singleton instance of the FoodRepository class.
@@ -50,7 +39,9 @@ class FoodRepository(FoodRepositoryInterface,DatabaseRepository,):
 
         return datas
     
+    #Retrieves the food data from the database
     def getFoodById(self,id):
+ 
         task = f"SELECT * FROM Foods WHERE id={id}"
         self._cursor.execute(task)
         data = self._cursor.fetchone()
@@ -75,17 +66,13 @@ class FoodRepository(FoodRepositoryInterface,DatabaseRepository,):
         return arr
 
     #updates the food data in the user table 
-
     def updateFoodField(self,json_data):
         model = FoodModel.jsonToUpdate(json_data = json_data,query_value=json_data.get("id"))   #json to updating format
         task = f"UPDATE Users SET {model.columns} WHERE id=?"
         self._cursor.execute(task,model.values) #execute query
         self._conn.commit() #update the database
 
-     
-    
-
-    
+     #knapsack algorithm
     def knapsack_food(self,json_data,calorie):
         foods = FoodModel.listMaptoFood(json_data)
         # json_data["id"]
@@ -114,6 +101,7 @@ class FoodRepository(FoodRepositoryInterface,DatabaseRepository,):
         return FoodModel.foodListToJson(addedFoods)
     
 
+    #set the diet using food selected by users
     def set_diet(self,id):
         self._cursor.execute(f"SELECT foods FROM Users WHERE id={id}")
         foods = dict(self._cursor.fetchone())

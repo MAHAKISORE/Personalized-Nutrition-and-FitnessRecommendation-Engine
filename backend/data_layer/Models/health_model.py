@@ -12,10 +12,7 @@ class HealthModel(UserModel,ModelInterface):
         self.diabetes:int = diabetes
         self.hyper_tension:int = hyper_tension
         self.gender:str = gender
-    
-    # def __str__(self):
-    #     return str(self.age)
-    
+
 
     @classmethod 
     def fromJson(health, json_data):
@@ -29,11 +26,3 @@ class HealthModel(UserModel,ModelInterface):
             gender = json_data.get("gender"),
             bmi = json_data.get("bmi")
         )
-
-    # def toDatabase(self, json_data,id):
-    #     data = self.fromJson(json_data)
-    #     return (data.height,data.weight,data.age,data.bmi,data.allergy,data.diabetes,data.hyper_tension,id)
-    
-    # @classmethod
-    # def fromDatabase(user,data):
-    #     return user(data[0],data[1],data[2],data[3],data[4],data[5],data[6]) 
