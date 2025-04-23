@@ -9,6 +9,7 @@ import json
 
 #Creating Flask instance
 app = Flask(__name__)
+food_controller = FoodController()
 
 #Cross Origin Resource Sharing
 CORS(app)
@@ -46,7 +47,7 @@ def login():
 def search():
     name = request.args.get('name')
     # sorted_list = FoodRepository().searchFood(name)
-    sorted_list = FoodController().searchFood(query=name)
+    sorted_list = food_controller.searchFood(query=name)
     return sorted_list
 
 @app.route(AppConfig.health_update_url,methods=['POST'])
@@ -58,7 +59,7 @@ def health_update():
 @app.route(AppConfig.food_update_url,methods = ["POST"])
 def food_update():
     body = request.get_json()
-    food_controller = FoodController()
+    # food_controller = FoodController()
     res = food_controller.updateFood(json_data=body)
 
     return res
@@ -67,12 +68,17 @@ def get_high_protein_diet():
     body = request.get_json()
     calorie = request.args.get("calorie")
     print(calorie)
-    food_controller = FoodController()
+    # food_controller = FoodController()
     return food_controller.high_protein_diet(json_data=body,calorie=float(calorie))
+
+@app.route("/user/update/<id>",methods=["POST"])
+def updateUser(id):
+    body = request.get_json()
+    return food_controller.update(id=id,json_data=body)
     
-@app.route("/user/diet/<id>",methods = ["POST"])
+@app.route(AppConfig.high_protein_diet+"/<id>",methods = ["POST"])
 def get_diet(id):
-    food_controller = FoodController()
+  
     return food_controller.get_diet(id=id)
 #running the app
 app.run(debug=True)

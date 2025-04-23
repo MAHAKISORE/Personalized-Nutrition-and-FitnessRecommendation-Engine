@@ -49,15 +49,7 @@ class FoodRepository(FoodRepositoryInterface,DatabaseRepository,):
 
     #jarowinkler searching
     def searchFood(self,query,db_data):
-        # send_data = self.getData()
-        datas = []
-        # print(db_data)
-        for i in db_data:
-            # print(i)
-            print(i)
-
-            datas.append(FoodModel.fromJson(i))
-        jaro_search = JaroWrinklerSearching(datas)
+        jaro_search = JaroWrinklerSearching(db_data)
         sorted_list = jaro_search.hybrid_search(query=query)
         arr = []
         for data in sorted_list:
@@ -74,11 +66,13 @@ class FoodRepository(FoodRepositoryInterface,DatabaseRepository,):
 
      #knapsack algorithm
     def knapsack_food(self,json_data,calorie):
+        
         foods = FoodModel.listMaptoFood(json_data)
         # json_data["id"]
         # json_data[0]["name"]
         for k in  foods:
             print(f"{k.calorie},{k.protien}")
+        #Tim sort time complexity is O(nlogn)
         foods.sort(key=lambda x:(x.protien/x.calorie),reverse=True)
         finalCalorie = 0.0
         addedFoods = []

@@ -33,6 +33,7 @@ class UserRepository(DatabaseRepository,UserRepositoryInterface):
                 if(cls._conn is None):
                     cls.connect()                    
                 cls._cursor = cls._conn.cursor()
+            #object class is responsible for object creating and initialization
             cls.user_instance = super(UserRepository,cls).__new__(cls)
         return cls.user_instance 
 

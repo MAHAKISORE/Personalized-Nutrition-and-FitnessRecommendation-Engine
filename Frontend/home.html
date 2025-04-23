@@ -1,19 +1,162 @@
-<html>
-    <script type="text/javascript">
-        window.onload = function(){
-            var id = localStorage.getItem("id")
-            if(!id){
-                window.location.href = "/home/sharvesh/Desktop/Personalized-Nutrition-and-FitnessRecommendation-Engine/Frontend/signIn_login/main.html"
-            }
-        }
-        function logout(){
-            localStorage.removeItem("id")
-            window.location.href = "/home/sharvesh/Desktop/Personalized-Nutrition-and-FitnessRecommendation-Engine/Frontend/signIn_login/main.html"
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Weekly Schedule</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background: #f1f1f1;
+      margin: 0;
+      padding: 0;
+    }
 
+    .container {
+      width: 90%;
+      max-width: 800px;
+      margin: 2rem auto;
+    }
+
+    .logout-btn {
+      float: right;
+      margin: 1rem;
+      padding: 8px 16px;
+      background: #f44336;
+      color: white;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+    }
+
+    .day-card {
+      background: #fff;
+      border-radius: 10px;
+      margin-bottom: 1rem;
+      box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+    }
+
+    .day-header {
+      padding: 1rem;
+      background: #4CAF50;
+      color: white;
+      font-size: 1.2rem;
+      font-weight: bold;
+      border-radius: 10px 10px 0 0;
+      cursor: pointer;
+    }
+
+    .time-slots {
+      display: none;
+      padding: 1rem;
+    }
+
+    .slot {
+      margin-bottom: 1rem;
+    }
+
+    .slot-title {
+      font-weight: bold;
+      margin-bottom: 0.3rem;
+    }
+
+    .item {
+      margin-left: 1rem;
+      color: #333;
+    }
+  </style>
+</head>
+<body>
+
+  <button class="logout-btn" onclick="logout()">Logout</button>
+
+  <div class="container" id="scheduleContainer">
+    Loading schedule...
+  </div>
+
+  <script>
+    const id = localStorage.getItem("id");
+    // ✅ Session check on load
+    window.onload = function () {
+      const id = localStorage.getItem("id");
+      if (!id) {
+        window.location.href = "/home/sharvesh/Desktop/Personalized-Nutrition-and-FitnessRecommendation-Engine/Frontend/signIn_login/main.html";
+        return;
+      }
+      fetchSchedule();
+    };
+
+    // ❌ Logout function
+    function logout() {
+      localStorage.removeItem("id");
+      window.location.href = "/home/sharvesh/Desktop/Personalized-Nutrition-and-FitnessRecommendation-Engine/Frontend/signIn_login/main.html";
+    }
+
+    // 📡 Fetch weekly schedule data
+    async function fetchSchedule() {
+      const API_URL = "http://127.0.0.1:5000/user/diet/90718; // Replace with your real API
+
+      try {
+        const response = await fetch(API_URL);
+        const data = await response.json();
+        renderSchedule(data);
+      } catch (error) {
+        document.getElementById("scheduleContainer").innerHTML = "Failed to load schedule.";
+        console.error("Error fetching schedule:", error);
+      }
+    }
+
+    // 🖼️ Render UI
+    function renderSchedule(schedule) {
+      const container = document.getElementById("scheduleContainer");
+      container.innerHTML = "";
+
+      for (const [day, slots] of Object.entries(schedule)) {
+        const card = document.createElement("div");
+        card.className = "day-card";
+
+        const header = document.createElement("div");
+        header.className = "day-header";
+        header.textContent = day;
+
+        const slotContainer = document.createElement("div");
+        slotContainer.className = "time-slots";
+
+        for (const [slotName, items] of Object.entries(slots)) {
+          const slot = document.createElement("div");
+          slot.className = "slot";
+
+          const slotTitle = document.createElement("div");
+          slotTitle.className = "slot-title";
+          slotTitle.textContent = slotName;
+
+          slot.appendChild(slotTitle);
+
+          if (items.length > 0) {
+            items.forEach(item => {
+              const itemDiv = document.createElement("div");
+              itemDiv.className = "item";
+              itemDiv.textContent = `• ${item}`;
+              slot.appendChild(itemDiv);
+            });
+          } else {
+            const noItem = document.createElement("div");
+            noItem.className = "item";
+            noItem.textContent = "No items";
+            slot.appendChild(noItem);
+          }
+
+          slotContainer.appendChild(slot);
         }
 
-    </script>
-    <body>
-        <button onclick="logout()">Logout</button>
-    </body>
+        header.addEventListener("click", () => {
+          slotContainer.style.display = slotContainer.style.display === "none" ? "block" : "none";
+        });
+
+        card.appendChild(header);
+        card.appendChild(slotContainer);
+        container.appendChild(card);
+      }
+    }
+  </script>
+</body>
 </html>

@@ -45,4 +45,9 @@ class UserAuth(UserAuthInterface):
     
         
         
-        
+    def update(self,json_data,id):
+        user = self.__data.getUser("id",id)
+        if(user == None):
+            self.__data.updateUser(json_data,id)
+            return {"msg":"Updated"},AppConfig.ok_code
+        return {"msg":"Invalid id"},AppConfig.unauthorized_code

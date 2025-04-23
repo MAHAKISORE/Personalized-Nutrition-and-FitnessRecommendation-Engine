@@ -1,7 +1,7 @@
 from ..data_layer.repository.food_repository import FoodRepository
 from..view.config import AppConfig
 from abc import ABC,abstractmethod
-from ..proxy_layer.food_proxy import FoodProxy
+# from ..proxy_layer.food_proxy import FoodProxy
 
 
 class FoodControllerInterface(ABC):
@@ -13,7 +13,7 @@ class FoodControllerInterface(ABC):
 class FoodController(FoodControllerInterface):
     def __init__(self):
         self.food_repo = FoodRepository()
-        self.food_proxy = FoodProxy()
+        # self.food_proxy = FoodProxy()
 
     def updateFood(self,json_data):
         if(json_data.get("id") == None):
@@ -24,7 +24,8 @@ class FoodController(FoodControllerInterface):
     def searchFood(self,query):
         if(query == None or query == ""):
             return {"data":""},AppConfig.ok_code
-        filtered_data = self.food_proxy.searchFood(query=query)
+        data = self.food_repo.getData()
+        filtered_data = self.food_repo.searchFood(query=query,db_data=data)
         return filtered_data
 
 
